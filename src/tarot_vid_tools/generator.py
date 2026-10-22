@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Dynamic lookups with multi-attribute semantic taxonomy."""
+"""Tarot Video Tools: Dynamic lookups with precise card count extraction."""
 
 import sys
 import json
@@ -90,9 +90,8 @@ class LocalDeckRepository:
         with open(filepath, "r", encoding="utf-8") as f:
             return DeckData.from_dict(json.load(f))
 
-
 class OpenLibraryDeckFetcher:
-    """Queries open metadata frameworks to resolve card names dynamically."""
+    """Queries open metadata frameworks to resolve sizes and names safely."""
 
     @staticmethod
     def _query_api(url: str) -> dict:
@@ -104,28 +103,43 @@ class OpenLibraryDeckFetcher:
         except Exception:  # pylint: disable=broad-except
             return {}
 
-    def fetch_card_names(self, deck_name: str) -> List[str]:
-        """Resolves target names using open bibliographical search indices."""
+    def fetch_card_details(self, deck_name: str) -> Tuple[List[str], Optional[int]]:
+        """Resolves deck assets and extracts actual card counts from descriptions."""
+        import re
+
         encoded_name = urllib.parse.quote(deck_name)
         search_url = f"https://openlibrary.org{encoded_name}"
         search_data = self._query_api(search_url)
 
         docs = search_data.get("docs", [])
         if not docs or not isinstance(docs, list):
-            return []
+            return [], None
 
-        work_key = docs[0].get("key") if docs else None
+        inferred_count = None
+        for doc in docs[:3]:
+            for text_field in [doc.get("title", ""), " ".join(doc.get("text", []))]:
+                match = re.search(r"(\d+)[-\s]*(?:card|portal|gate)", text_field, re.IGNORECASE)
+                if match:
+                    inferred_count = int(match.group(1))
+                    break
+
+        if len(docs) == 0:
+            return [], inferred_count
+
+        target_doc = docs[0]
+        work_key = target_doc.get("key")
         if not work_key:
-            return []
+            return [], inferred_count
 
-        data_url = f"https://openlibrary.org{work_key}.json"
-        work_data = self._query_api(data_url)
-
+        work_data = self._query_api(f"https://openlibrary.org{work_key}.json")
         description = work_data.get("description", "")
         if isinstance(description, dict):
             description = description.get("value", "")
 
-        import re
+        if not inferred_count and description:
+            match = re.search(r"(\d+)[-\s]*(?:card|portal|gate)", description, re.IGNORECASE)
+            if match:
+                inferred_count = int(match.group(1))
 
         lines = description.split("\n")
         card_names = []
@@ -134,7 +148,7 @@ class OpenLibraryDeckFetcher:
             if match:
                 card_names.append(match.group(1).strip())
 
-        return sorted(list(set(card_names)))
+        return sorted(list(set(card_names))), inferred_count
 
 
 class SemanticAttributeEnricher:
@@ -143,132 +157,60 @@ class SemanticAttributeEnricher:
     def __init__(self):
         # Comprehensive cross-reference multi-attribute blueprint configuration matrix layout
         self.matrix = [
-            (
-                "gateway",
-                {
-                    "astrology": "Cosmic Gate / Galactic Node",
-                    "binary_yes_no": "Yes",
-                    "gender": "Non-Binary / Source",
-                    "element": "Cosmic Ether",
-                    "jungian": "Transcendent Function",
-                    "archetype": "The Portal",
-                    "cosmic": "Deep Space Portal",
-                    "energy": "High Frequency",
-                    "polarity": "Neutral",
-                },
-            ),
-            (
-                "transmission",
-                {
-                    "astrology": "Uranus / Fixed Star Decan",
-                    "binary_yes_no": "Yes",
-                    "gender": "Androgynous",
-                    "element": "Plasma / Light",
-                    "jungian": "Active Imagination",
-                    "archetype": "The Messenger",
-                    "cosmic": "Interstellar Wave",
-                    "energy": "Vibrational Upgrade",
-                    "polarity": "Active",
-                },
-            ),
-            (
-                "chakra",
-                {
-                    "astrology": "Inner Planet Alignment",
-                    "binary_yes_no": "Neutral",
-                    "gender": "Balanced",
-                    "element": "Prana Field",
-                    "jungian": "Self-Regulation",
-                    "archetype": "The Anchor",
-                    "cosmic": "Microcosmic Reflection",
-                    "energy": "Bio-Electric",
-                    "polarity": "Dual",
-                },
-            ),
-            (
-                "temple",
-                {
-                    "astrology": "Saturn / 4th House Home",
-                    "binary_yes_no": "Yes",
-                    "gender": "Feminine / Receptive",
-                    "element": "Earth Anchor",
-                    "jungian": "The Sanctuary / Temenos",
-                    "archetype": "The Hermit",
-                    "cosmic": "Ethereal Retreat Core",
-                    "energy": "Stabilized Power",
-                    "polarity": "Passive",
-                },
-            ),
-            (
-                "wands",
-                {
-                    "astrology": "Sun / Fire Mars Decan",
-                    "binary_yes_no": "Yes",
-                    "gender": "Masculine / Expressive",
-                    "element": "Fire",
-                    "jungian": "Libido / Psychic Drive",
-                    "archetype": "The Hero / Creator",
-                    "cosmic": "Solar Flare Core",
-                    "energy": "Dynamic / Kinetic",
-                    "polarity": "Positive",
-                },
-            ),
-            (
-                "cups",
-                {
-                    "astrology": "Moon / Venus Water Decan",
-                    "binary_yes_no": "Yes",
-                    "gender": "Feminine / Receptive",
-                    "element": "Water",
-                    "jungian": "Anima / Feeling Function",
-                    "archetype": "The Lover / Mystic",
-                    "cosmic": "Lunar Lunar Core",
-                    "energy": "Fluidic / Astral",
-                    "polarity": "Negative",
-                },
-            ),
-            (
-                "swords",
-                {
-                    "astrology": "Mercury / Saturn Air Decan",
-                    "binary_yes_no": "No",
-                    "gender": "Masculine / Direct",
-                    "element": "Air",
-                    "jungian": "Persona / Thinking Function",
-                    "archetype": "The Ruler / Sage",
-                    "cosmic": "Nebula Cloud Split",
-                    "energy": "Focused / Electric",
-                    "polarity": "Positive",
-                },
-            ),
-            (
-                "pentacles",
-                {
-                    "astrology": "Jupiter / Taurus Earth Decan",
-                    "binary_yes_no": "Yes",
-                    "gender": "Feminine / Grounded",
-                    "element": "Earth",
-                    "jungian": "Shadow / Sensation Function",
-                    "archetype": "The Provider",
-                    "cosmic": "Planetary Crust Gravity",
-                    "energy": "Magnetic / Dense",
-                    "polarity": "Negative",
-                },
-            ),
-            (
-                "fool",
-                {
-                    "astrology": "Uranus / Zero State Node",
-                    "binary_yes_no": "Yes",
-                    "gender": "Unmanifest Potency",
-                    "element": "Air / Æther",
-                    "jungian": "The Puer Aeternus Core",
-                    "archetype": "The Innocent / Wanderer",
-                    "cosmic": "Pre-Big-Bang Singularity",
-                    "energy": "Pure Potential",
-                    "polarity": "Neutral",
-                },
-            ),
+            ("gateway", {
+                "astrology": "Cosmic Gate / Galactic Node", "binary_yes_no": "Yes",
+                "gender": "Non-Binary / Source", "element": "Cosmic Ether",
+                "jungian": "Transcendent Function", "archetype": "The Portal",
+                "cosmic": "Deep Space Portal", "energy": "High Frequency", "polarity": "Neutral"
+            }),
+            ("transmission", {
+                "astrology": "Uranus / Fixed Star Decan", "binary_yes_no": "Yes",
+                "gender": "Androgynous", "element": "Plasma / Light",
+                "jungian": "Active Imagination", "archetype": "The Messenger",
+                "cosmic": "Interstellar Wave", "energy": "Vibrational Upgrade", "polarity": "Active"
+            }),
+            ("chakra", {
+                "astrology": "Inner Planet Alignment", "binary_yes_no": "Neutral",
+                "gender": "Balanced", "element": "Prana Field",
+                "jungian": "Self-Regulation", "archetype": "The Anchor",
+                "cosmic": "Microcosmic Reflection", "energy": "Bio-Electric", "polarity": "Dual"
+            }),
+            ("temple", {
+                "astrology": "Saturn / 4th House Home", "binary_yes_no": "Yes",
+                "gender": "Feminine / Receptive", "element": "Earth Anchor",
+                "jungian": "The Sanctuary / Temenos", "archetype": "The Hermit",
+                "cosmic": "Ethereal Retreat Core", "energy": "Stabilized Power", "polarity": "Passive"
+            }),
+            ("wands", {
+                "astrology": "Sun / Fire Mars Decan", "binary_yes_no": "Yes",
+                "gender": "Masculine / Expressive", "element": "Fire",
+                "jungian": "Libido / Psychic Drive", "archetype": "The Hero / Creator",
+                "cosmic": "Solar Flare Core", "energy": "Dynamic / Kinetic", "polarity": "Positive"
+            }),
+            ("cups", {
+                "astrology": "Moon / Venus Water Decan", "binary_yes_no": "Yes",
+                "gender": "Feminine / Receptive", "element": "Water",
+                "jungian": "Anima / Feeling Function", "archetype": "The Lover / Mystic",
+                "cosmic": "Lunar Lunar Core", "energy": "Fluidic / Astral", "polarity": "Negative"
+            }),
+            ("swords", {
+                "astrology": "Mercury / Saturn Air Decan", "binary_yes_no": "No",
+                "gender": "Masculine / Direct", "element": "Air",
+                "jungian": "Persona / Thinking Function", "archetype": "The Ruler / Sage",
+                "cosmic": "Nebula Cloud Split", "energy": "Focused / Electric", "polarity": "Positive"
+            }),
+            ("pentacles", {
+                "astrology": "Jupiter / Taurus Earth Decan", "binary_yes_no": "Yes",
+                "gender": "Feminine / Grounded", "element": "Earth",
+                "jungian": "Shadow / Sensation Function", "archetype": "The Provider",
+                "cosmic": "Planetary Crust Gravity", "energy": "Magnetic / Dense", "polarity": "Negative"
+            }),
+            ("fool", {
+                "astrology": "Uranus / Zero State Node", "binary_yes_no": "Yes",
+                "gender": "Unmanifest Potency", "element": "Air / Æther",
+                "jungian": "The Puer Aeternus Core", "archetype": "The Innocent / Wanderer",
+                "cosmic": "Pre-Big-Bang Singularity", "energy": "Pure Potential", "polarity": "Neutral"
+            })
         ]
 
     def enrich_card(self, card_name: str) -> Dict[str, str]:
@@ -279,17 +221,11 @@ class SemanticAttributeEnricher:
                 return inferred_attrs.copy()
 
         return {
-            "astrology": "Universal Blueprint System",
-            "binary_yes_no": "Neutral",
-            "gender": "Unified Field Essence",
-            "element": "Aura Field Synthesis",
-            "jungian": "Collective Unconscious Space",
-            "archetype": "The Shadow Prototype",
-            "cosmic": "Nebula Grounding Matrix",
-            "energy": "Radiant Vibration",
-            "polarity": "Balanced",
+            "astrology": "Universal Blueprint System", "binary_yes_no": "Neutral",
+            "gender": "Unified Field Essence", "element": "Aura Field Synthesis",
+            "jungian": "Collective Unconscious Space", "archetype": "The Shadow Prototype",
+            "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
-
 
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component evaluating timelines with reversal matching."""
@@ -378,9 +314,12 @@ class OptimizedSlidingWindowAnalyzer:
         seen_cards: Set[Tuple[str, str]] = set()
         kw_set = set(keywords)
 
+        # Fix: Safely reference the first element dict to pull introduction seconds
         if sub_file and len(sub_file) > 0:
             intro_sec = self._get_cue_seconds(sub_file[0].start)
-            chapters.append({"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"})
+            chapters.append(
+                {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
+            )
 
         i, total_cues = 0, len(sub_file)
         while i < total_cues:
@@ -413,10 +352,10 @@ class OptimizedSlidingWindowAnalyzer:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
 
-
 @click.group()
 def main():
     """Tarot Video Tools: Orchestrator managing dynamic chapter extraction metrics."""
+    pass
 
 
 @main.command()
@@ -430,41 +369,52 @@ def main():
 )
 @click.option("--cache-dir", default=".deck_cache", type=str, help="Pathway for cache operations.")
 def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
-    """Auto-generates comprehensive localized registries dynamically from open directories."""
+    """Auto-generates localized registries using specialized fallback sizing arrays."""
     repo = LocalDeckRepository(cache_dir)
     deck = DeckData(deck_name=name, deck_type=deck_type_arg)
 
     click.echo(f"Querying open directories to discover card assets for '{name}'...")
     fetcher = OpenLibraryDeckFetcher()
     enricher = SemanticAttributeEnricher()
-    card_names = fetcher.fetch_card_names(name)
+    card_names, extracted_size = fetcher.fetch_card_details(name)
 
     if not card_names:
-        click.echo("Directory empty. Generating baseline configuration maps locally...", err=True)
+        low_name = name.lower()
+        target_size = extracted_size if extracted_size else 44
+
+        # Real-World Creator Sizing Core Master Maps
+        if "spirit animal" in low_name:
+            target_size = 68
+        elif "wisdom of the oracle" in low_name or "goddess power" in low_name:
+            target_size = 52
+        elif "postcards from spirit" in low_name or "moonology" in low_name:
+            target_size = 52
+        elif "crystal spirits" in low_name:
+            target_size = 58
+        elif "enchanted map" in low_name or "the map oracle" in low_name:
+            target_size = 54
+        elif "ancestors" in low_name:
+            target_size = 55
+        elif "starseed" in low_name:
+            target_size = 53
+        elif "7 energies" in low_name:
+            target_size = 49
+        elif "mystical shaman" in low_name or "shaman's dream" in low_name:
+            target_size = 64
+        elif "alchemy" in low_name:
+            target_size = 71
+        elif "animal spirit" in low_name:
+            target_size = 63
+        elif "keepers of the light" in low_name:
+            target_size = 45
+
         if deck_type_arg == "tarot":
             majors = [
-                "The Fool",
-                "The Magician",
-                "The High Priestess",
-                "The Empress",
-                "The Emperor",
-                "The Hierophant",
-                "The Lovers",
-                "The Chariot",
-                "Strength",
-                "The Hermit",
-                "Wheel of Fortune",
-                "Justice",
-                "The Hanged Man",
-                "Death",
-                "Temperance",
-                "The Devil",
-                "The Tower",
-                "The Star",
-                "The Moon",
-                "The Sun",
-                "Judgement",
-                "The World",
+                "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
+                "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
+                "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
+                "The Devil", "The Tower", "The Star", "The Moon", "The Sun", "Judgement",
+                "The World"
             ]
             card_names = majors
             for suit in ["Wands", "Cups", "Swords", "Pentacles"]:
@@ -472,7 +422,7 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
                 card_names.extend([f"{n} of {suit}" for n in range(2, 11)])
                 card_names.extend([f"{c} of {suit}" for c in ["Page", "Knight", "Queen", "King"]])
         else:
-            card_names = [f"Oracle Key Card Entry {i}" for i in range(1, 45)]
+            card_names = [f"Oracle Key Card Entry {i}" for i in range(1, target_size + 1)]
 
     for idx, card_title in enumerate(card_names):
         inferred_attrs = enricher.enrich_card(card_title)
@@ -493,7 +443,9 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
     required=True,
     help="Target validation registries lookup identifiers.",
 )
-@click.option("--cache-dir", default=".deck_cache", type=str, help="Workspace location configuration.")
+@click.option(
+    "--cache-dir", default=".deck_cache", type=str, help="Workspace location configuration."
+)
 @click.option("--output", type=click.Path(), help="Target file layout destination file route.")
 def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Optional[str]):
     """Analyzes physical subtitle tracks against registered lookup catalogs."""
@@ -507,17 +459,8 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
     sub_file = pysrt.open(srt_file, encoding="utf-8")
     analyzer = OptimizedSlidingWindowAnalyzer()
     keywords = [
-        "pull",
-        "drawn",
-        "card",
-        "reveal",
-        "show",
-        "position",
-        "reading",
-        "layout",
-        "next",
-        "coming through",
-        "clarify",
+        "pull", "drawn", "card", "reveal", "show", "position", "reading", "layout",
+        "next", "coming through", "clarify",
     ]
 
     chapters = analyzer.analyze_chapters(sub_file, active_decks, keywords)
@@ -534,3 +477,4 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
 
 if __name__ == "__main__":
     main()
+
