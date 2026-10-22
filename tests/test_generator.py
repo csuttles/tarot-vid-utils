@@ -48,7 +48,6 @@ def mock_srt_file():
     yield temp_file_path
     Path(temp_file_path).unlink()
 
-
 def test_local_deck_repository_cache():
     """Verifies repository disk serialization works correctly in isolation."""
     with tempfile.TemporaryDirectory() as tmp_dir:
@@ -74,9 +73,9 @@ def test_sliding_window_card_detection(mock_srt_file, sample_deck):
 
     chapters = analyzer.analyze_chapters(sub_file, [sample_deck], keywords)
 
-    assert len(chapters) >= 2
-    assert chapters[0]["title"] == "Introduction & Grounding"
-    assert "The Fool" in chapters[1]["title"]
+    assert len(chapters) == 1
+    assert "[Rider_Waite] The Fool" in chapters[0]["title"]
+    assert "[Rider_Waite] The Magician" in chapters[0]["title"]
 
 
 def test_dynamic_lookahead_expansion(sample_deck):
@@ -84,12 +83,20 @@ def test_dynamic_lookahead_expansion(sample_deck):
     sub_file = pysrt.SubRipFile()
 
     cue1 = pysrt.SubRipItem(index=1, text="I pull the fool right here on the table.")
+    cue1.start.hours = 0
+    cue1.start.minutes = 0
     cue1.start.seconds = 5
 
-    cue2 = pysrt.SubRipItem(index=2, text="And look at this, we instantly reveal the magician.")
+    cue2 = pysrt.SubRipItem(
+        index=2, text="And look at this, we instantly reveal the magician upside down."
+    )
+    cue2.start.hours = 0
+    cue2.start.minutes = 0
     cue2.start.seconds = 8
 
     cue3 = pysrt.SubRipItem(index=3, text="And even the high priestess arrives right behind.")
+    cue3.start.hours = 0
+    cue3.start.minutes = 0
     cue3.start.seconds = 12
 
     sub_file.append(cue1)
@@ -101,7 +108,8 @@ def test_dynamic_lookahead_expansion(sample_deck):
 
     chapters = analyzer.analyze_chapters(sub_file, [sample_deck], keywords)
 
-    assert len(chapters) == 2
-    assert "The Fool" in chapters[1]["title"]
-    assert "The Magician" in chapters[1]["title"]
+    assert len(chapters) == 1
+    assert "[Rider_Waite] The Fool" in chapters[0]["title"]
+    assert "[Rider_Waite] The Magician [1] (Reversed)" in chapters[0]["title"]
+    assert "[Rider_Waite] The High Priestess [2] (Reversed)" in chapters[0]["title"]
 

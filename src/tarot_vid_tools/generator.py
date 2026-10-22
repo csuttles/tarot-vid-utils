@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Context-aware YouTube milestones from SRT transcripts."""
+"""Tarot Video Tools: Dynamic lookups, context tracking, and orientation detection."""
 
 import sys
 import json
+import urllib.request
+import urllib.parse
 from pathlib import Path
 from functools import lru_cache
 from dataclasses import dataclass, field, asdict
@@ -88,17 +90,64 @@ class LocalDeckRepository:
         with open(filepath, "r", encoding="utf-8") as f:
             return DeckData.from_dict(json.load(f))
 
+class OpenLibraryDeckFetcher:
+    """Queries open metadata frameworks to resolve card names dynamically."""
+
+    @staticmethod
+    def _query_api(url: str) -> dict:
+        headers = {"User-Agent": "tarot-vid-tools/0.1.0 (csuttles@case)"}
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=10) as response:
+                return json.loads(response.read().decode("utf-8"))
+        except Exception:  # pylint: disable=broad-except
+            return {}
+
+    def fetch_card_names(self, deck_name: str) -> List[str]:
+        """Resolves target names using open bibliographical search indices."""
+        encoded_name = urllib.parse.quote(deck_name)
+        search_url = f"https://openlibrary.org{encoded_name}"
+        search_data = self._query_api(search_url)
+
+        docs = search_data.get("docs", [])
+        if not docs or not isinstance(docs, list):
+            return []
+
+        work_key = docs[0].get("key") if docs else None
+        if not work_key:
+            return []
+
+        data_url = f"https://openlibrary.org{work_key}.json"
+        work_data = self._query_api(data_url)
+
+        description = work_data.get("description", "")
+        if isinstance(description, dict):
+            description = description.get("value", "")
+
+        import re
+
+        lines = description.split("\n")
+        card_names = []
+        for line in lines:
+            match = re.search(r"(?:-|\d+\.)\s*([A-Z][a-zA-Z\s]{3,30})", line)
+            if match:
+                card_names.append(match.group(1).strip())
+
+        return sorted(list(set(card_names)))
+
+
 class OptimizedSlidingWindowAnalyzer:
-    """Core analytical component evaluating timelines using standard windows."""
+    """Core analytical component evaluating timelines with reversal matching."""
 
     def __init__(self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1):
         self.base_window_size = base_window_size
         self.max_expanded_size = max_expanded_size
         self.step_size = step_size
+        self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
     def _scan_decks_for_match(
         self, text: str, decks: List[DeckData], kw_set: Set[str], seen: Set[Tuple[str, str]]
-    ) -> List[Tuple[str, CardData]]:
+    ) -> List[Tuple[str, CardData, bool]]:
         matches = []
         if not any(kw in text for kw in kw_set):
             return matches
@@ -106,13 +155,14 @@ class OptimizedSlidingWindowAnalyzer:
         for deck in decks:
             for card_key in deck.lookup_keys:
                 if card_key in text and (deck.deck_name, card_key) not in seen:
-                    matches.append((deck.deck_name, deck.cards[card_key]))
+                    is_rev = any(rw in text for rw in self.rev_keywords)
+                    matches.append((deck.deck_name, deck.cards[card_key], is_rev))
                     seen.add((deck.deck_name, card_key))
         return matches
 
     def _expand_window_horizontally(
         self, sub_file: pysrt.SubFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
-    ) -> Tuple[List[Tuple[str, CardData]], int]:
+    ) -> Tuple[List[Tuple[str, CardData, bool]], int]:
         expanded_matches = []
         current_size = self.base_window_size
         total_cues = len(sub_file)
@@ -126,7 +176,8 @@ class OptimizedSlidingWindowAnalyzer:
             for deck in decks:
                 for card_key in deck.lookup_keys:
                     if card_key in exp_text and (deck.deck_name, card_key) not in seen:
-                        expanded_matches.append((deck.deck_name, deck.cards[card_key]))
+                        is_rev = any(rw in exp_text for rw in self.rev_keywords)
+                        expanded_matches.append((deck.deck_name, deck.cards[card_key], is_rev))
                         seen.add((deck.deck_name, card_key))
                         found_new = True
 
@@ -134,11 +185,12 @@ class OptimizedSlidingWindowAnalyzer:
                 break
         return expanded_matches, current_size
 
-    def _build_chapter_title(self, hits: List[Tuple[str, CardData]]) -> str:
+    def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]]) -> str:
         card_strs = []
-        for d_name, card in hits:
+        for d_name, card, is_rev in hits:
             num_suffix = f" [{card.number}]" if card.number else ""
-            card_strs.append(f"[{d_name}] {card.name}{num_suffix}")
+            rev_suffix = " (Reversed)" if is_rev else ""
+            card_strs.append(f"[{d_name}] {card.name}{num_suffix}{rev_suffix}")
         return " + ".join(card_strs)
 
     def _get_cue_seconds(self, sub_time) -> int:
@@ -150,12 +202,19 @@ class OptimizedSlidingWindowAnalyzer:
         idx: int,
         decks: List[DeckData],
         seen: Set[Tuple[str, str]],
-        hits: List[Tuple[str, CardData]],
+        hits: List[Tuple[str, CardData, bool]],
     ) -> Tuple[str, int]:
         """Helper to compute lookahead text elements outside core footprint."""
         exp_hits, final_size = self._expand_window_horizontally(sub_file, idx, decks, seen)
         hits.extend(exp_hits)
         return self._build_chapter_title(hits), final_size
+
+    def _append_or_merge_chapter(self, chapters: List[dict], start_sec: int, title: str) -> None:
+        """Appends or merges a chapter to clear local variable limits."""
+        if chapters and (start_sec - self._time_to_seconds(chapters[-1]["timestamp"]) < 10):
+            chapters[-1]["title"] += f" + {title}"
+        else:
+            chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
 
     def analyze_chapters(self, sub_file: pysrt.SubFile, decks: List[DeckData], keywords: List[str]) -> List[dict]:
         """Analyzes subtitle timelines to generate chapter milestone tracks."""
@@ -163,8 +222,8 @@ class OptimizedSlidingWindowAnalyzer:
         seen_cards: Set[Tuple[str, str]] = set()
         kw_set = set(keywords)
 
-        if sub_file:
-            intro_sec = self._get_cue_seconds(sub_file.start)
+        if sub_file and len(sub_file) > 0:
+            intro_sec = self._get_cue_seconds(sub_file[0].start)
             chapters.append(
                 {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
             )
@@ -172,21 +231,17 @@ class OptimizedSlidingWindowAnalyzer:
         i, total_cues = 0, len(sub_file)
         while i < total_cues:
             window = sub_file[i : i + self.base_window_size]
-            if not window:
+            if not window or len(window) == 0:
                 i += self.step_size
                 continue
 
             window_text = " ".join([cue.text for cue in window]).lower()
-            start_sec = self._get_cue_seconds(window.start)
+            start_sec = self._get_cue_seconds(window[0].start)
 
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_cards)
             if hits:
                 title, final_size = self._process_match(sub_file, i, decks, seen_cards, hits)
-                diff = start_sec - self._time_to_seconds(chapters[-1]["timestamp"])
-                if chapters and (diff < 10):
-                    chapters[-1]["title"] += f" + {title}"
-                else:
-                    chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
+                self._append_or_merge_chapter(chapters, start_sec, title)
                 i += final_size
                 continue
 
@@ -216,38 +271,41 @@ def main():
     "deck_type_arg",
     default="tarot",
     type=click.Choice(["tarot", "oracle"]),
-    help="Deck architecture model layout.",
+    help="Deck structure template layout.",
 )
 @click.option("--cache-dir", default=".deck_cache", type=str, help="Pathway for cache operations.")
 def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
-    """Auto-generates structured asset registries for retrieval lookup pipelines."""
+    """Auto-generates comprehensive localized registries dynamically from open directories."""
     repo = LocalDeckRepository(cache_dir)
     deck = DeckData(deck_name=name, deck_type=deck_type_arg)
 
-    if deck_type_arg == "tarot":
-        majors = [
-            "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
-            "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
-            "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
-            "The Devil", "The Tower", "The Star", "The Moon", "The Sun", "Judgement",
-            "The World",
-        ]
-        for idx, card_name in enumerate(majors):
-            deck.cards[card_name.lower()] = CardData(name=card_name, number=str(idx))
+    click.echo(f"Querying open directories to discover card assets for '{name}'...")
+    fetcher = OpenLibraryDeckFetcher()
+    card_names = fetcher.fetch_card_names(name)
 
-        for suit in ["Wands", "Cups", "Swords", "Pentacles"]:
-            deck.cards[f"ace of {suit.lower()}"] = CardData(name=f"Ace of {suit}", number="1")
-            for num in range(2, 11):
-                deck.cards[f"{num} of {suit.lower()}"] = CardData(name=f"{num} of {suit}", number=str(num))
-            for court in ["Page", "Knight", "Queen", "King"]:
-                deck.cards[f"{court.lower()} of {suit.lower()}"] = CardData(name=f"{court} of {suit}")
-    else:
-        deck.cards["placeholder card template"] = CardData(
-            name="Template Card Name", number="1", attributes={"theme": "Universal"}
-        )
+    if not card_names:
+        click.echo("Directory empty. Generating baseline configuration maps locally...", err=True)
+        if deck_type_arg == "tarot":
+            majors = [
+                "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
+                "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
+                "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
+                "The Devil", "The Tower", "The Star", "The Moon", "The Sun", "Judgement",
+                "The World"
+            ]
+            card_names = majors
+            for suit in ["Wands", "Cups", "Swords", "Pentacles"]:
+                card_names.append(f"Ace of {suit}")
+                card_names.extend([f"{n} of {suit}" for n in range(2, 11)])
+                card_names.extend([f"{c} of {suit}" for c in ["Page", "Knight", "Queen", "King"]])
+        else:
+            card_names = [f"Oracle Key Card Entry {i}" for i in range(1, 45)]
+
+    for idx, card_title in enumerate(card_names):
+        deck.cards[card_title.lower().strip()] = CardData(name=card_title, number=str(idx + 1))
 
     repo.save_deck(deck)
-    click.echo(f"Successfully generated structured {deck_type_arg} template for '{name}'.")
+    click.echo(f"Successfully serialized {len(deck.cards)} cards into local cache storage.")
 
 
 @main.command()
@@ -293,5 +351,4 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
 
 if __name__ == "__main__":
     main()
-
 
