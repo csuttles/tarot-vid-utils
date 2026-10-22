@@ -39,14 +39,13 @@ def mock_srt_file():
         "00:00:10,000 --> 00:00:14,000\n"
         "This is fascinating because right next to it, I reveal the magician too.\n"
     )
-    with tempfile.NamedTemporaryFile(
-        mode="w+", suffix=".srt", delete=False, encoding="utf-8"
-    ) as temp_file:
+    with tempfile.NamedTemporaryFile(mode="w+", suffix=".srt", delete=False, encoding="utf-8") as temp_file:
         temp_file.write(srt_content)
         temp_file_path = temp_file.name
 
     yield temp_file_path
     Path(temp_file_path).unlink()
+
 
 def test_local_deck_repository_cache():
     """Verifies repository disk serialization works correctly in isolation."""
@@ -74,8 +73,8 @@ def test_sliding_window_card_detection(mock_srt_file, sample_deck):
     chapters = analyzer.analyze_chapters(sub_file, [sample_deck], keywords)
 
     assert len(chapters) == 1
-    assert "[Rider_Waite] The Fool" in chapters[0]["title"]
-    assert "[Rider_Waite] The Magician" in chapters[0]["title"]
+    assert "[Rider_Waite] The Fool [0] <Universal>" in chapters[0]["title"]
+    assert "[Rider_Waite] The Magician [1] <Universal>" in chapters[0]["title"]
 
 
 def test_dynamic_lookahead_expansion(sample_deck):
@@ -87,9 +86,7 @@ def test_dynamic_lookahead_expansion(sample_deck):
     cue1.start.minutes = 0
     cue1.start.seconds = 5
 
-    cue2 = pysrt.SubRipItem(
-        index=2, text="And look at this, we instantly reveal the magician upside down."
-    )
+    cue2 = pysrt.SubRipItem(index=2, text="And look at this, we instantly reveal the magician upside down.")
     cue2.start.hours = 0
     cue2.start.minutes = 0
     cue2.start.seconds = 8
@@ -109,7 +106,6 @@ def test_dynamic_lookahead_expansion(sample_deck):
     chapters = analyzer.analyze_chapters(sub_file, [sample_deck], keywords)
 
     assert len(chapters) == 1
-    assert "[Rider_Waite] The Fool" in chapters[0]["title"]
-    assert "[Rider_Waite] The Magician [1] (Reversed)" in chapters[0]["title"]
-    assert "[Rider_Waite] The High Priestess [2] (Reversed)" in chapters[0]["title"]
-
+    assert "[Rider_Waite] The Fool [0] <Universal>" in chapters[0]["title"]
+    assert "[Rider_Waite] The Magician [1] (Reversed) <Universal>" in chapters[0]["title"]
+    assert "[Rider_Waite] The High Priestess [2] (Reversed) <Universal>" in chapters[0]["title"]

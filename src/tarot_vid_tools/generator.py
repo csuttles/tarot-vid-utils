@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Dynamic lookups, context tracking, and orientation detection."""
+"""Tarot Video Tools: Dynamic lookups with multi-attribute semantic taxonomy."""
 
 import sys
 import json
@@ -90,6 +90,7 @@ class LocalDeckRepository:
         with open(filepath, "r", encoding="utf-8") as f:
             return DeckData.from_dict(json.load(f))
 
+
 class OpenLibraryDeckFetcher:
     """Queries open metadata frameworks to resolve card names dynamically."""
 
@@ -134,6 +135,160 @@ class OpenLibraryDeckFetcher:
                 card_names.append(match.group(1).strip())
 
         return sorted(list(set(card_names)))
+
+
+class SemanticAttributeEnricher:
+    """Evaluates extracted tokens against matrices to infer metadata fields."""
+
+    def __init__(self):
+        # Comprehensive cross-reference multi-attribute blueprint configuration matrix layout
+        self.matrix = [
+            (
+                "gateway",
+                {
+                    "astrology": "Cosmic Gate / Galactic Node",
+                    "binary_yes_no": "Yes",
+                    "gender": "Non-Binary / Source",
+                    "element": "Cosmic Ether",
+                    "jungian": "Transcendent Function",
+                    "archetype": "The Portal",
+                    "cosmic": "Deep Space Portal",
+                    "energy": "High Frequency",
+                    "polarity": "Neutral",
+                },
+            ),
+            (
+                "transmission",
+                {
+                    "astrology": "Uranus / Fixed Star Decan",
+                    "binary_yes_no": "Yes",
+                    "gender": "Androgynous",
+                    "element": "Plasma / Light",
+                    "jungian": "Active Imagination",
+                    "archetype": "The Messenger",
+                    "cosmic": "Interstellar Wave",
+                    "energy": "Vibrational Upgrade",
+                    "polarity": "Active",
+                },
+            ),
+            (
+                "chakra",
+                {
+                    "astrology": "Inner Planet Alignment",
+                    "binary_yes_no": "Neutral",
+                    "gender": "Balanced",
+                    "element": "Prana Field",
+                    "jungian": "Self-Regulation",
+                    "archetype": "The Anchor",
+                    "cosmic": "Microcosmic Reflection",
+                    "energy": "Bio-Electric",
+                    "polarity": "Dual",
+                },
+            ),
+            (
+                "temple",
+                {
+                    "astrology": "Saturn / 4th House Home",
+                    "binary_yes_no": "Yes",
+                    "gender": "Feminine / Receptive",
+                    "element": "Earth Anchor",
+                    "jungian": "The Sanctuary / Temenos",
+                    "archetype": "The Hermit",
+                    "cosmic": "Ethereal Retreat Core",
+                    "energy": "Stabilized Power",
+                    "polarity": "Passive",
+                },
+            ),
+            (
+                "wands",
+                {
+                    "astrology": "Sun / Fire Mars Decan",
+                    "binary_yes_no": "Yes",
+                    "gender": "Masculine / Expressive",
+                    "element": "Fire",
+                    "jungian": "Libido / Psychic Drive",
+                    "archetype": "The Hero / Creator",
+                    "cosmic": "Solar Flare Core",
+                    "energy": "Dynamic / Kinetic",
+                    "polarity": "Positive",
+                },
+            ),
+            (
+                "cups",
+                {
+                    "astrology": "Moon / Venus Water Decan",
+                    "binary_yes_no": "Yes",
+                    "gender": "Feminine / Receptive",
+                    "element": "Water",
+                    "jungian": "Anima / Feeling Function",
+                    "archetype": "The Lover / Mystic",
+                    "cosmic": "Lunar Lunar Core",
+                    "energy": "Fluidic / Astral",
+                    "polarity": "Negative",
+                },
+            ),
+            (
+                "swords",
+                {
+                    "astrology": "Mercury / Saturn Air Decan",
+                    "binary_yes_no": "No",
+                    "gender": "Masculine / Direct",
+                    "element": "Air",
+                    "jungian": "Persona / Thinking Function",
+                    "archetype": "The Ruler / Sage",
+                    "cosmic": "Nebula Cloud Split",
+                    "energy": "Focused / Electric",
+                    "polarity": "Positive",
+                },
+            ),
+            (
+                "pentacles",
+                {
+                    "astrology": "Jupiter / Taurus Earth Decan",
+                    "binary_yes_no": "Yes",
+                    "gender": "Feminine / Grounded",
+                    "element": "Earth",
+                    "jungian": "Shadow / Sensation Function",
+                    "archetype": "The Provider",
+                    "cosmic": "Planetary Crust Gravity",
+                    "energy": "Magnetic / Dense",
+                    "polarity": "Negative",
+                },
+            ),
+            (
+                "fool",
+                {
+                    "astrology": "Uranus / Zero State Node",
+                    "binary_yes_no": "Yes",
+                    "gender": "Unmanifest Potency",
+                    "element": "Air / Æther",
+                    "jungian": "The Puer Aeternus Core",
+                    "archetype": "The Innocent / Wanderer",
+                    "cosmic": "Pre-Big-Bang Singularity",
+                    "energy": "Pure Potential",
+                    "polarity": "Neutral",
+                },
+            ),
+        ]
+
+    def enrich_card(self, card_name: str) -> Dict[str, str]:
+        """Scans card naming structures to extrapolate taxonomy definitions dynamically."""
+        lower_name = card_name.lower()
+        for keyword, inferred_attrs in self.matrix:
+            if keyword in lower_name:
+                return inferred_attrs.copy()
+
+        return {
+            "astrology": "Universal Blueprint System",
+            "binary_yes_no": "Neutral",
+            "gender": "Unified Field Essence",
+            "element": "Aura Field Synthesis",
+            "jungian": "Collective Unconscious Space",
+            "archetype": "The Shadow Prototype",
+            "cosmic": "Nebula Grounding Matrix",
+            "energy": "Radiant Vibration",
+            "polarity": "Balanced",
+        }
 
 
 class OptimizedSlidingWindowAnalyzer:
@@ -190,7 +345,8 @@ class OptimizedSlidingWindowAnalyzer:
         for d_name, card, is_rev in hits:
             num_suffix = f" [{card.number}]" if card.number else ""
             rev_suffix = " (Reversed)" if is_rev else ""
-            card_strs.append(f"[{d_name}] {card.name}{num_suffix}{rev_suffix}")
+            ast_val = card.attributes.get("astrology", "Universal")
+            card_strs.append(f"[{d_name}] {card.name}{num_suffix}{rev_suffix} <{ast_val}>")
         return " + ".join(card_strs)
 
     def _get_cue_seconds(self, sub_time) -> int:
@@ -224,9 +380,7 @@ class OptimizedSlidingWindowAnalyzer:
 
         if sub_file and len(sub_file) > 0:
             intro_sec = self._get_cue_seconds(sub_file[0].start)
-            chapters.append(
-                {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
-            )
+            chapters.append({"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"})
 
         i, total_cues = 0, len(sub_file)
         while i < total_cues:
@@ -259,6 +413,7 @@ class OptimizedSlidingWindowAnalyzer:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
 
+
 @click.group()
 def main():
     """Tarot Video Tools: Orchestrator managing dynamic chapter extraction metrics."""
@@ -281,17 +436,35 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
 
     click.echo(f"Querying open directories to discover card assets for '{name}'...")
     fetcher = OpenLibraryDeckFetcher()
+    enricher = SemanticAttributeEnricher()
     card_names = fetcher.fetch_card_names(name)
 
     if not card_names:
         click.echo("Directory empty. Generating baseline configuration maps locally...", err=True)
         if deck_type_arg == "tarot":
             majors = [
-                "The Fool", "The Magician", "The High Priestess", "The Empress", "The Emperor",
-                "The Hierophant", "The Lovers", "The Chariot", "Strength", "The Hermit",
-                "Wheel of Fortune", "Justice", "The Hanged Man", "Death", "Temperance",
-                "The Devil", "The Tower", "The Star", "The Moon", "The Sun", "Judgement",
-                "The World"
+                "The Fool",
+                "The Magician",
+                "The High Priestess",
+                "The Empress",
+                "The Emperor",
+                "The Hierophant",
+                "The Lovers",
+                "The Chariot",
+                "Strength",
+                "The Hermit",
+                "Wheel of Fortune",
+                "Justice",
+                "The Hanged Man",
+                "Death",
+                "Temperance",
+                "The Devil",
+                "The Tower",
+                "The Star",
+                "The Moon",
+                "The Sun",
+                "Judgement",
+                "The World",
             ]
             card_names = majors
             for suit in ["Wands", "Cups", "Swords", "Pentacles"]:
@@ -302,7 +475,10 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
             card_names = [f"Oracle Key Card Entry {i}" for i in range(1, 45)]
 
     for idx, card_title in enumerate(card_names):
-        deck.cards[card_title.lower().strip()] = CardData(name=card_title, number=str(idx + 1))
+        inferred_attrs = enricher.enrich_card(card_title)
+        deck.cards[card_title.lower().strip()] = CardData(
+            name=card_title, number=str(idx + 1), attributes=inferred_attrs
+        )
 
     repo.save_deck(deck)
     click.echo(f"Successfully serialized {len(deck.cards)} cards into local cache storage.")
@@ -317,9 +493,7 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
     required=True,
     help="Target validation registries lookup identifiers.",
 )
-@click.option(
-    "--cache-dir", default=".deck_cache", type=str, help="Workspace location configuration."
-)
+@click.option("--cache-dir", default=".deck_cache", type=str, help="Workspace location configuration.")
 @click.option("--output", type=click.Path(), help="Target file layout destination file route.")
 def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Optional[str]):
     """Analyzes physical subtitle tracks against registered lookup catalogs."""
@@ -333,8 +507,17 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
     sub_file = pysrt.open(srt_file, encoding="utf-8")
     analyzer = OptimizedSlidingWindowAnalyzer()
     keywords = [
-        "pull", "drawn", "card", "reveal", "show", "position", "reading", "layout",
-        "next", "coming through", "clarify",
+        "pull",
+        "drawn",
+        "card",
+        "reveal",
+        "show",
+        "position",
+        "reading",
+        "layout",
+        "next",
+        "coming through",
+        "clarify",
     ]
 
     chapters = analyzer.analyze_chapters(sub_file, active_decks, keywords)
@@ -351,4 +534,3 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
 
 if __name__ == "__main__":
     main()
-
