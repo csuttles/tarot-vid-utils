@@ -1,14 +1,15 @@
 [project]
 name = "tarot-vid-tools"
 version = "0.1.0"
-description = ""
+description = "Context-aware automated subtitle to YouTube chapter generator for tarot and oracle readings."
 authors = [
     {name = "Your Name", email = "you@example.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "pysrt (>=1.1.2,<2.0.0)"
+    "pysrt (>=1.1.2,<2.0.0)",
+    "click (>=8.1.7,<9.0.0)"
 ]
 
 [tool.poetry]

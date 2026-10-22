@@ -98,4 +98,3 @@ def test_dynamic_lookahead_expansion(sample_deck):
     assert len(chapters) == 2
     assert "The Fool" in chapters[1]["title"]
     assert "The Magician" in chapters[1]["title"]
-
