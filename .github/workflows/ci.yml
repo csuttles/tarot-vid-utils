@@ -14,16 +14,15 @@ jobs:
     - name: Checkout Code Repository
       uses: actions/checkout@v4
 
-    - name: Install and Configure Poetry
-      run: |
-        curl -sSL https://python-poetry.org | python3 -
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
-
     - name: Set up Python 3.14 Environment
       uses: actions/setup-python@v5
       with:
         python-version: '3.14'
-        cache: 'poetry'
+
+    - name: Install and Configure Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Force Local Virtual Environment Matrix
       run: |
