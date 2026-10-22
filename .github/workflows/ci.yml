@@ -1,0 +1,43 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code Repository
+      uses: actions/checkout@v4
+
+    - name: Install and Configure Poetry
+      run: |
+        curl -sSL https://python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Set up Python 3.14 Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.14'
+        cache: 'poetry'
+
+    - name: Force Local Virtual Environment Matrix
+      run: |
+        poetry config virtualenvs.in-project true
+
+    - name: Install Project Dependencies
+      run: poetry install --no-interaction
+
+    - name: Verify Code Formatting (Black)
+      run: poetry run black --check src/ tests/
+
+    - name: Verify Style Enforcement (Flake8)
+      run: poetry run flake8 src/ tests/
+
+    - name: Execute Automated Test Suite (Pytest)
+      run: poetry run pytest
+
