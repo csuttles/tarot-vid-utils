@@ -242,7 +242,6 @@ class SemanticAttributeEnricher:
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
 
-
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component tracking card timelines and prioritized tarot sets."""
 
@@ -282,7 +281,6 @@ class OptimizedSlidingWindowAnalyzer:
                 else:
                     matched_oracle.append(deck)
 
-        # Enforce strict fallback order: Rider Waite, Golden Dawn, Hermetic Tarot
         priority_order = ["rider waite", "golden dawn", "hermetic"]
         sorted_tarot = []
 
@@ -291,12 +289,10 @@ class OptimizedSlidingWindowAnalyzer:
                 if priority in deck.deck_name.lower() and deck not in sorted_tarot:
                     sorted_tarot.append(deck)
 
-        # Append remaining non-priority tarot files if still below limit bounds
         for deck in matched_tarot:
             if deck not in sorted_tarot:
                 sorted_tarot.append(deck)
 
-        # Throttle total loaded tarot models back to the top 3 examples to prevent duplicates
         return sorted_tarot[:3] + matched_oracle
 
     def _scan_frameworks(self, text: str) -> List[str]:
@@ -397,8 +393,9 @@ class OptimizedSlidingWindowAnalyzer:
         seen_card_counts: Dict[Tuple[str, str], int] = {}
         kw_set = set(keywords)
 
+        # FIX: Reference index [0] to extract .start metrics cleanly from mock list configurations
         if sub_file and len(sub_file) > 0:
-            intro_sec = self._get_cue_seconds(sub_file.start)
+            intro_sec = self._get_cue_seconds(sub_file[0].start)
             chapters.append(
                 {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
             )
@@ -411,7 +408,7 @@ class OptimizedSlidingWindowAnalyzer:
                 continue
 
             window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
-            start_sec = self._get_cue_seconds(window.start)
+            start_sec = self._get_cue_seconds(window[0].start)
 
             meta_topics = self._scan_frameworks(window_text)
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_card_counts)
@@ -579,5 +576,4 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
 
 if __name__ == "__main__":
     main()
-
 
