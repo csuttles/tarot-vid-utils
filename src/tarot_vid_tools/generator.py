@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Dynamic lookups, metadata enrichment, and multi-deck throttles."""
+"""Tarot Video Tools: Dynamic lookups, deep metadata enrichment, and dense narrative tracking."""
 
 import sys
 import json
@@ -236,14 +236,14 @@ class SemanticAttributeEnricher:
                 return inferred_attrs.copy()
 
         return {
-            "astrology": "Universal Blueprint System", "binary_yes_no": "Neutral",
-            "gender": "Unified Field Essence", "element": "Aura Field Synthesis",
+            "astrology": "Mars / Aries Decan Axis", "binary_yes_no": "Neutral",
+            "gender": "Unified Field Essence", "element": "Earth & Fire Synthesis",
             "jungian": "Collective Unconscious Space", "archetype": "The Shadow Prototype",
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
 
 class OptimizedSlidingWindowAnalyzer:
-    """Core analytical component tracking card timelines and prioritized tarot sets."""
+    """Core analytical component transforming timeline hits into dense narrative sentences."""
 
     def __init__(
         self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1
@@ -253,16 +253,26 @@ class OptimizedSlidingWindowAnalyzer:
         self.step_size = step_size
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
+        # Mapping rich, detailed semantic associations directly onto framework keywords
         self.frameworks = [
-            ("channeled message", ["channeled", "channeling", "download", "received transmission"]),
-            ("psychic mediumship", ["mediumship", "psychic", "spirit world", "clairvoyant", "clairsentient"]),
-            ("jungian archetype", ["jungian", "archetype", "shadow self", "collective unconscious", "anima"]),
-            ("qhht session", ["qhht", "quantum healing", "past life regression", "dolores cannon"]),
-            ("reiki healing", ["reiki", "attunement", "life force energy", "cho ku rei"]),
-            ("astrology alignment", ["astrology", "natal chart", "transit", "zodiac", "rising sign"]),
-            ("sound therapy", ["sound healing", "solfeggio", "binaural", "tuning fork", "resonance"]),
-            ("shamanic practice", ["shaman", "mesa", "lower world", "soul retrieval", "heavy energy"]),
-            ("deity presence", ["hecate", "archangel michael", "lilith", "osiris", "isis", "anubis"])
+            ("channeled message", ["channeled", "channeling", "download", "received transmission"],
+             "A direct spiritual stream channeling higher intelligence down into conscious awareness."),
+            ("psychic mediumship", ["mediumship", "psychic", "spirit world", "clairvoyant"],
+             "Bridging the veil via clairvoyant senses to access multi-dimensional ancestral guidance."),
+            ("jungian archetype", ["jungian", "archetype", "shadow self", "collective unconscious", "anima"],
+             "Activating structural components of the collective subconscious to integrate split persona aspects."),
+            ("qhht session", ["qhht", "quantum healing", "past life regression", "dolores cannon"],
+             "Inducing deep somnambulistic trance states to pull somatic insights from past-life regressions."),
+            ("reiki healing", ["reiki", "attunement", "life force energy"],
+             "Channelling universal life force energy through palm positions to balance bio-field anomalies."),
+            ("astrology alignment", ["astrology", "natal chart", "transit", "zodiac", "rising sign"],
+             "Mapping active transits and hard planetary aspects interacting directly with geometric birth charts."),
+            ("sound therapy", ["sound healing", "solfeggio", "binaural", "tuning fork"],
+             "Utilizing solfeggio sound healing frequencies to alter brainwave states and drop somatic resistance."),
+            ("shamanic practice", ["shaman", "mesa", "lower world", "soul retrieval"],
+             "Engaging Andean shamanism techniques to clear heavy energy and anchor a localized medicine axis."),
+            ("deity presence", ["hecate", "archangel michael", "lilith", "osiris", "isis"],
+             "Invoking primordial cosmic currents through archetypal deities to anchor transmutational spaces.")
         ]
 
     def detect_active_decks(
@@ -296,12 +306,27 @@ class OptimizedSlidingWindowAnalyzer:
         return sorted_tarot[:3] + matched_oracle
 
     def _scan_frameworks(self, text: str) -> List[str]:
-        """Identifies active non-card spiritual modalities and entities spoken in window."""
-        active = []
-        for name, keywords in self.frameworks:
+        """Compiles dense contextual descriptions for active spiritual modalities spoken in window."""
+        active_descriptions = []
+
+        # Check specific transits or aspects if astrology terms are used
+        if "astrology" in text or "transit" in text:
+            aspect = "Conjunction" if "conjunction" in text else "Opposition" if "opposition" in text else "Transit Aspect"
+            active_descriptions.append(f"Astrology ({aspect} involving current celestial movements).")
+
+        # Process standard framework keywords
+        for name, keywords, summary in self.frameworks:
             if any(kw in text for kw in keywords):
-                active.append(name.title())
-        return active
+                if name == "jungian archetype":
+                    # Interpolate explicit archetypes if mentioned explicitly
+                    arch = "Hecate / Crone" if "hecate" in text else "The Shadow" if "shadow" in text else "Anima"
+                    active_descriptions.append(f"Jungian Archetype (Integrating the {arch} dynamic into ego consciousness).")
+                elif name == "deity presence":
+                    deity = "Hecate" if "hecate" in text else "Lilith" if "lilith" in text else "Archangel Michael" if "michael" in text else "The Divine Entity"
+                    active_descriptions.append(f"Deity Presence (Invoking {deity} to anchor and oversee transmutational workspace currents).")
+                else:
+                    active_descriptions.append(f"{name.title()} ({summary})")
+        return active_descriptions
 
     def _scan_decks_for_match(
         self, text: str, decks: List[DeckData], kw_set: Set[str], seen_counts: Dict[Tuple[str, str], int]
@@ -348,20 +373,30 @@ class OptimizedSlidingWindowAnalyzer:
         return expanded_matches, current_size
 
     def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]], meta_topics: List[str]) -> str:
-        elements = []
+        narrative_parts = []
+
+        # 1. Base Framework Topic Narratives
         if meta_topics:
-            elements.append(f"Focus: {', '.join(meta_topics)}")
+            narrative_parts.append(" ".join(meta_topics))
 
-        card_strs = []
+        # 2. Rich, High-Density Card Narratives
+        card_narratives = []
         for d_name, card, is_rev in hits:
-            num_suffix = f" [{card.number}]" if card.number else ""
-            rev_suffix = " (Reversed)" if is_rev else ""
-            ast_val = card.attributes.get("astrology", "Universal")
-            card_strs.append(f"[{d_name}] {card.name}{num_suffix}{rev_suffix} <{ast_val}>")
+            rev_str = " in reverse orientation" if is_rev else " in upright alignment"
+            elem = card.attributes.get("element", "Aura Field")
+            astro = card.attributes.get("astrology", "Universal")
 
-        if card_strs:
-            elements.append(" + ".join(card_strs))
-        return " | ".join(elements)
+            # Formulate full descriptive sentence pairing card art directly with core elements
+            card_desc = (
+                f"Activation of {card.name} ({d_name}){rev_str}, grounding structured archetypal "
+                f"currents directly through the element of {elem} and corresponding {astro} attributes."
+            )
+            card_narratives.append(card_desc)
+
+        if card_narratives:
+            narrative_parts.append(" ".join(card_narratives))
+
+        return " | ".join(narrative_parts)
 
     def _get_cue_seconds(self, sub_time) -> int:
         return sub_time.hours * 3600 + sub_time.minutes * 60 + sub_time.seconds
@@ -381,7 +416,7 @@ class OptimizedSlidingWindowAnalyzer:
 
     def _append_or_merge_chapter(self, chapters: List[dict], start_sec: int, title: str) -> None:
         if chapters and (start_sec - self._time_to_seconds(chapters[-1]["timestamp"]) < 10):
-            chapters[-1]["title"] += f" + {title}"
+            chapters[-1]["title"] += f" {title}"
         else:
             chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
 
@@ -393,45 +428,8 @@ class OptimizedSlidingWindowAnalyzer:
         seen_card_counts: Dict[Tuple[str, str], int] = {}
         kw_set = set(keywords)
 
-        # FIX: Reference index [0] to extract .start metrics cleanly from mock list configurations
         if sub_file and len(sub_file) > 0:
-            intro_sec = self._get_cue_seconds(sub_file[0].start)
-            chapters.append(
-                {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
-            )
-
-        i, total_cues = 0, len(sub_file)
-        while i < total_cues:
-            window = sub_file[i : i + self.base_window_size]
-            if not window or len(window) == 0:
-                i += self.step_size
-                continue
-
-            window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
-            start_sec = self._get_cue_seconds(window[0].start)
-
-            meta_topics = self._scan_frameworks(window_text)
-            hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_card_counts)
-
-            if hits or meta_topics:
-                title, final_size = self._process_match(sub_file, i, decks, seen_card_counts, hits, meta_topics)
-                self._append_or_merge_chapter(chapters, start_sec, title)
-                i += final_size
-                continue
-
-            i += self.step_size
-        return chapters
-
-    @staticmethod
-    @lru_cache(maxsize=128)
-    def _seconds_to_time(seconds: int) -> str:
-        return f"{seconds // 3600:02d}:{(seconds % 3600) // 60:02d}:{seconds % 60:02d}"
-
-    @staticmethod
-    @lru_cache(maxsize=128)
-    def _time_to_seconds(time_str: str) -> int:
-        h, m, s = map(int, time_str.split(":"))
-        return h * 3600 + m * 60 + s
+            intro_sec = self._get_cue_seconds(sub_file.start)
 
 # ==============================================================================
 # CLI Group Definition (Must be defined first to resolve decorator references)
