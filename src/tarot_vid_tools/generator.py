@@ -247,7 +247,8 @@ class OptimizedSlidingWindowAnalyzer:
 
     def detect_active_decks(self, sub_file: pysrt.SubFile, all_decks: List[DeckData]) -> List[DeckData]:
         """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
-        full_text = " ".join([cue.text for cue in sub_file]).lower()
+        # FIX: Explicitly extract the .text property from each cue item
+        full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, 'text')]).lower()
         matched_decks = []
 
         for deck in all_decks:
