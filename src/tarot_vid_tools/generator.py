@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Dynamic lookups with precise card count extraction."""
+"""Tarot Video Tools: Dynamic lookups, size metrics, and auto-deck detection."""
 
 import sys
 import json
@@ -90,6 +90,16 @@ class LocalDeckRepository:
         with open(filepath, "r", encoding="utf-8") as f:
             return DeckData.from_dict(json.load(f))
 
+    def load_all_cached_decks(self) -> List[DeckData]:
+        """Scans the cache directory to load all existing deck models into memory."""
+        decks = []
+        for file_path in self.cache_dir.glob("*.json"):
+            try:
+                with open(file_path, "r", encoding="utf-8") as f:
+                    decks.append(DeckData.from_dict(json.load(f)))
+            except (json.JSONDecodeError, KeyError):
+                continue
+        return decks
 class OpenLibraryDeckFetcher:
     """Queries open metadata frameworks to resolve sizes and names safely."""
 
@@ -126,7 +136,7 @@ class OpenLibraryDeckFetcher:
         if len(docs) == 0:
             return [], inferred_count
 
-        target_doc = docs[0]
+        target_doc = docs
         work_key = target_doc.get("key")
         if not work_key:
             return [], inferred_count
@@ -226,7 +236,6 @@ class SemanticAttributeEnricher:
             "jungian": "Collective Unconscious Space", "archetype": "The Shadow Prototype",
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
-
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component evaluating timelines with reversal matching."""
 
@@ -235,6 +244,18 @@ class OptimizedSlidingWindowAnalyzer:
         self.max_expanded_size = max_expanded_size
         self.step_size = step_size
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
+
+    def detect_active_decks(self, sub_file: pysrt.SubFile, all_decks: List[DeckData]) -> List[DeckData]:
+        """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
+        full_text = " ".join([cue.text for cue in sub_file]).lower()
+        matched_decks = []
+
+        for deck in all_decks:
+            match_count = sum(1 for card_key in deck.lookup_keys if card_key in full_text)
+            # Threshold constraint: Deck requires at least 2 distinct spoken matches
+            if match_count >= 2:
+                matched_decks.append(deck)
+        return matched_decks
 
     def _scan_decks_for_match(
         self, text: str, decks: List[DeckData], kw_set: Set[str], seen: Set[Tuple[str, str]]
@@ -314,9 +335,8 @@ class OptimizedSlidingWindowAnalyzer:
         seen_cards: Set[Tuple[str, str]] = set()
         kw_set = set(keywords)
 
-        # Fix: Safely reference the first element dict to pull introduction seconds
         if sub_file and len(sub_file) > 0:
-            intro_sec = self._get_cue_seconds(sub_file[0].start)
+            intro_sec = self._get_cue_seconds(sub_file.start)
             chapters.append(
                 {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
             )
@@ -329,7 +349,7 @@ class OptimizedSlidingWindowAnalyzer:
                 continue
 
             window_text = " ".join([cue.text for cue in window]).lower()
-            start_sec = self._get_cue_seconds(window[0].start)
+            start_sec = self._get_cue_seconds(window.start)
 
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_cards)
             if hits:
@@ -351,7 +371,6 @@ class OptimizedSlidingWindowAnalyzer:
     def _time_to_seconds(time_str: str) -> int:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
-
 @click.group()
 def main():
     """Tarot Video Tools: Orchestrator managing dynamic chapter extraction metrics."""
@@ -382,7 +401,6 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
         low_name = name.lower()
         target_size = extracted_size if extracted_size else 44
 
-        # Real-World Creator Sizing Core Master Maps
         if "spirit animal" in low_name:
             target_size = 68
         elif "wisdom of the oracle" in low_name or "goddess power" in low_name:
@@ -440,8 +458,8 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
     "--deck",
     "deck_list",
     multiple=True,
-    required=True,
-    help="Target validation registries lookup identifiers.",
+    required=False,
+    help="Target validation registries. If blank, automatically scans speech dialogue.",
 )
 @click.option(
     "--cache-dir", default=".deck_cache", type=str, help="Workspace location configuration."
@@ -450,14 +468,27 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
 def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Optional[str]):
     """Analyzes physical subtitle tracks against registered lookup catalogs."""
     repo = LocalDeckRepository(cache_dir)
-    active_decks = [repo.load_deck(name) for name in deck_list if repo.load_deck(name)]
+    sub_file = pysrt.open(srt_file, encoding="utf-8")
+    analyzer = OptimizedSlidingWindowAnalyzer()
+
+    # Dynamic Zero-Configuration Auto-Detection Flow Block
+    if not deck_list:
+        click.echo("No explicit decks provided. Scanning dialogue for keyword signatures...")
+        all_cached_decks = repo.load_all_cached_decks()
+        active_decks = analyzer.detect_active_decks(sub_file, all_cached_decks)
+        if not active_decks:
+            click.echo("Error: Unable to auto-detect any active deck cache templates.", err=True)
+            sys.exit(1)
+        # Log discovered signature identities to terminal
+        discovered_names = [d.deck_name for d in active_decks]
+        click.echo(f"Auto-detected active registries: {', '.join(discovered_names)}")
+    else:
+        active_decks = [repo.load_deck(name) for name in deck_list if repo.load_deck(name)]
 
     if not active_decks:
         click.echo("Error: Specified registries could not be resolved.", err=True)
         sys.exit(1)
 
-    sub_file = pysrt.open(srt_file, encoding="utf-8")
-    analyzer = OptimizedSlidingWindowAnalyzer()
     keywords = [
         "pull", "drawn", "card", "reveal", "show", "position", "reading", "layout",
         "next", "coming through", "clarify",
