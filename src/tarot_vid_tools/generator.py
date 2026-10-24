@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Tarot Video Tools: Dynamic lookups, size metrics, and auto-deck detection."""
+"""Tarot Video Tools: Dynamic lookups, metadata enrichment, and multi-deck throttles."""
 
 import sys
 import json
@@ -171,7 +171,6 @@ class SemanticAttributeEnricher:
     """Evaluates extracted tokens against matrices to infer metadata fields."""
 
     def __init__(self):
-        # Comprehensive cross-reference multi-attribute blueprint configuration matrix layout
         self.matrix = [
             ("gateway", {
                 "astrology": "Cosmic Gate / Galactic Node", "binary_yes_no": "Yes",
@@ -244,7 +243,7 @@ class SemanticAttributeEnricher:
         }
 
 class OptimizedSlidingWindowAnalyzer:
-    """Core analytical component evaluating timelines with reversal matching."""
+    """Core analytical component tracking card timelines and meta-topics frameworks."""
 
     def __init__(
         self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1
@@ -253,6 +252,19 @@ class OptimizedSlidingWindowAnalyzer:
         self.max_expanded_size = max_expanded_size
         self.step_size = step_size
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
+
+        # Cross-framework diagnostic metadata topics lookup catalog map matrix
+        self.frameworks = [
+            ("channeled message", ["channeled", "channeling", "download", "received transmission"]),
+            ("psychic mediumship", ["mediumship", "psychic", "spirit world", "clairvoyant", "clairsentient"]),
+            ("jungian archetype", ["jungian", "archetype", "shadow self", "collective unconscious", "anima"]),
+            ("qhht session", ["qhht", "quantum healing", "past life regression", "dolores cannon"]),
+            ("reiki healing", ["reiki", "attunement", "life force energy", "cho ku rei"]),
+            ("astrology alignment", ["astrology", "natal chart", "transit", "zodiac", "rising sign"]),
+            ("sound therapy", ["sound healing", "solfeggio", "binaural", "tuning fork", "resonance"]),
+            ("shamanic practice", ["shaman", "mesa", "lower world", "soul retrieval", "heavy energy"]),
+            ("deity presence", ["hecate", "archangel michael", "lilith", "osiris", "isis", "anubis"])
+        ]
 
     def detect_active_decks(
         self, sub_file: SubRipFile, all_decks: List[DeckData]
@@ -267,8 +279,16 @@ class OptimizedSlidingWindowAnalyzer:
                 matched_decks.append(deck)
         return matched_decks
 
+    def _scan_frameworks(self, text: str) -> List[str]:
+        """Identifies active non-card spiritual modalities and entities spoken in window."""
+        active = []
+        for name, keywords in self.frameworks:
+            if any(kw in text for kw in keywords):
+                active.append(name.title())
+        return active
+
     def _scan_decks_for_match(
-        self, text: str, decks: List[DeckData], kw_set: Set[str], seen: Set[Tuple[str, str]]
+        self, text: str, decks: List[DeckData], kw_set: Set[str], seen_counts: Dict[Tuple[str, str], int]
     ) -> List[Tuple[str, CardData, bool]]:
         matches = []
         if not any(kw in text for kw in kw_set):
@@ -276,14 +296,17 @@ class OptimizedSlidingWindowAnalyzer:
 
         for deck in decks:
             for card_key in deck.lookup_keys:
-                if card_key in text and (deck.deck_name, card_key) not in seen:
+                if card_key in text:
+                    # Throttle Constraint: Enforce a hard cap of 3 repeat references per unique card
+                    if seen_counts.get((deck.deck_name, card_key), 0) >= 3:
+                        continue
                     is_rev = any(rw in text for rw in self.rev_keywords)
                     matches.append((deck.deck_name, deck.cards[card_key], is_rev))
-                    seen.add((deck.deck_name, card_key))
+                    seen_counts[(deck.deck_name, card_key)] = seen_counts.get((deck.deck_name, card_key), 0) + 1
         return matches
 
     def _expand_window_horizontally(
-        self, sub_file: SubRipFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
+        self, sub_file: SubRipFile, start_idx: int, decks: List[DeckData], seen_counts: Dict[Tuple[str, str], int]
     ) -> Tuple[List[Tuple[str, CardData, bool]], int]:
         expanded_matches = []
         current_size = self.base_window_size
@@ -297,24 +320,33 @@ class OptimizedSlidingWindowAnalyzer:
             found_new = False
             for deck in decks:
                 for card_key in deck.lookup_keys:
-                    if card_key in exp_text and (deck.deck_name, card_key) not in seen:
+                    if card_key in exp_text:
+                        if seen_counts.get((deck.deck_name, card_key), 0) >= 3:
+                            continue
                         is_rev = any(rw in exp_text for rw in self.rev_keywords)
                         expanded_matches.append((deck.deck_name, deck.cards[card_key], is_rev))
-                        seen.add((deck.deck_name, card_key))
+                        seen_counts[(deck.deck_name, card_key)] = seen_counts.get((deck.deck_name, card_key), 0) + 1
                         found_new = True
 
             if not found_new and current_size > (self.base_window_size + 2):
                 break
         return expanded_matches, current_size
 
-    def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]]) -> str:
+    def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]], meta_topics: List[str]) -> str:
+        elements = []
+        if meta_topics:
+            elements.append(f"Focus: {', '.join(meta_topics)}")
+
         card_strs = []
         for d_name, card, is_rev in hits:
             num_suffix = f" [{card.number}]" if card.number else ""
             rev_suffix = " (Reversed)" if is_rev else ""
             ast_val = card.attributes.get("astrology", "Universal")
             card_strs.append(f"[{d_name}] {card.name}{num_suffix}{rev_suffix} <{ast_val}>")
-        return " + ".join(card_strs)
+
+        if card_strs:
+            elements.append(" + ".join(card_strs))
+        return " | ".join(elements)
 
     def _get_cue_seconds(self, sub_time) -> int:
         return sub_time.hours * 3600 + sub_time.minutes * 60 + sub_time.seconds
@@ -324,12 +356,13 @@ class OptimizedSlidingWindowAnalyzer:
         sub_file: SubRipFile,
         idx: int,
         decks: List[DeckData],
-        seen: Set[Tuple[str, str]],
+        seen_counts: Dict[Tuple[str, str], int],
         hits: List[Tuple[str, CardData, bool]],
+        meta_topics: List[str]
     ) -> Tuple[str, int]:
-        exp_hits, final_size = self._expand_window_horizontally(sub_file, idx, decks, seen)
+        exp_hits, final_size = self._expand_window_horizontally(sub_file, idx, decks, seen_counts)
         hits.extend(exp_hits)
-        return self._build_chapter_title(hits), final_size
+        return self._build_chapter_title(hits, meta_topics), final_size
 
     def _append_or_merge_chapter(self, chapters: List[dict], start_sec: int, title: str) -> None:
         if chapters and (start_sec - self._time_to_seconds(chapters[-1]["timestamp"]) < 10):
@@ -342,10 +375,9 @@ class OptimizedSlidingWindowAnalyzer:
     ) -> List[dict]:
         """Analyzes subtitle timelines to generate chapter milestone tracks."""
         chapters = []
-        seen_cards: Set[Tuple[str, str]] = set()
+        seen_card_counts: Dict[Tuple[str, str], int] = {}
         kw_set = set(keywords)
 
-        # FIX: Access the first element's start attribute to prevent list-level AttributeErrors
         if sub_file and len(sub_file) > 0:
             intro_sec = self._get_cue_seconds(sub_file[0].start)
             chapters.append(
@@ -362,9 +394,11 @@ class OptimizedSlidingWindowAnalyzer:
             window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
             start_sec = self._get_cue_seconds(window[0].start)
 
-            hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_cards)
-            if hits:
-                title, final_size = self._process_match(sub_file, i, decks, seen_cards, hits)
+            meta_topics = self._scan_frameworks(window_text)
+            hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_card_counts)
+
+            if hits or meta_topics:
+                title, final_size = self._process_match(sub_file, i, decks, seen_card_counts, hits, meta_topics)
                 self._append_or_merge_chapter(chapters, start_sec, title)
                 i += final_size
                 continue
@@ -382,7 +416,6 @@ class OptimizedSlidingWindowAnalyzer:
     def _time_to_seconds(time_str: str) -> int:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
-
 
 # ==============================================================================
 # CLI Group Definition (Must be defined first to resolve decorator references)
