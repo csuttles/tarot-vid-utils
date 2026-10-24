@@ -12,6 +12,7 @@ from typing import List, Dict, Optional, Set, Tuple
 
 import click
 import pysrt
+from pysrt import SubRipFile, SubRipItem
 
 
 @dataclass
@@ -242,6 +243,7 @@ class SemanticAttributeEnricher:
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
 
+
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component evaluating timelines with reversal matching."""
 
@@ -254,7 +256,7 @@ class OptimizedSlidingWindowAnalyzer:
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
     def detect_active_decks(
-        self, sub_file: pysrt.SubRipFile, all_decks: List[DeckData]
+        self, sub_file: SubRipFile, all_decks: List[DeckData]
     ) -> List[DeckData]:
         """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
         full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, "text")]).lower()
@@ -282,7 +284,7 @@ class OptimizedSlidingWindowAnalyzer:
         return matches
 
     def _expand_window_horizontally(
-        self, sub_file: pysrt.SubRipFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
+        self, sub_file: SubRipFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
     ) -> Tuple[List[Tuple[str, CardData, bool]], int]:
         expanded_matches = []
         current_size = self.base_window_size
@@ -320,7 +322,7 @@ class OptimizedSlidingWindowAnalyzer:
 
     def _process_match(
         self,
-        sub_file: pysrt.SubRipFile,
+        sub_file: SubRipFile,
         idx: int,
         decks: List[DeckData],
         seen: Set[Tuple[str, str]],
@@ -337,7 +339,7 @@ class OptimizedSlidingWindowAnalyzer:
             chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
 
     def analyze_chapters(
-        self, sub_file: pysrt.SubRipFile, decks: List[DeckData], keywords: List[str]
+        self, sub_file: SubRipFile, decks: List[DeckData], keywords: List[str]
     ) -> List[dict]:
         """Analyzes subtitle timelines to generate chapter milestone tracks."""
         chapters = []
@@ -524,4 +526,5 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
 
 if __name__ == "__main__":
     main()
+
 
