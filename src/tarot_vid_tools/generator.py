@@ -100,6 +100,7 @@ class LocalDeckRepository:
             except (json.JSONDecodeError, KeyError):
                 continue
         return decks
+
 class OpenLibraryDeckFetcher:
     """Queries open metadata frameworks to resolve sizes and names safely."""
 
@@ -128,7 +129,9 @@ class OpenLibraryDeckFetcher:
         inferred_count = None
         for doc in docs[:3]:
             for text_field in [doc.get("title", ""), " ".join(doc.get("text", []))]:
-                match = re.search(r"(\d+)[-\s]*(?:card|portal|gate)", text_field, re.IGNORECASE)
+                match = re.search(
+                    r"(\d+)[-\s]*(?:card|portal|gate)", text_field, re.IGNORECASE
+                )
                 if match:
                     inferred_count = int(match.group(1))
                     break
@@ -136,7 +139,7 @@ class OpenLibraryDeckFetcher:
         if len(docs) == 0:
             return [], inferred_count
 
-        target_doc = docs
+        target_doc = docs[0]
         work_key = target_doc.get("key")
         if not work_key:
             return [], inferred_count
@@ -147,7 +150,9 @@ class OpenLibraryDeckFetcher:
             description = description.get("value", "")
 
         if not inferred_count and description:
-            match = re.search(r"(\d+)[-\s]*(?:card|portal|gate)", description, re.IGNORECASE)
+            match = re.search(
+                r"(\d+)[-\s]*(?:card|portal|gate)", description, re.IGNORECASE
+            )
             if match:
                 inferred_count = int(match.group(1))
 
@@ -236,24 +241,27 @@ class SemanticAttributeEnricher:
             "jungian": "Collective Unconscious Space", "archetype": "The Shadow Prototype",
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
+
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component evaluating timelines with reversal matching."""
 
-    def __init__(self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1):
+    def __init__(
+        self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1
+    ):
         self.base_window_size = base_window_size
         self.max_expanded_size = max_expanded_size
         self.step_size = step_size
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
-    def detect_active_decks(self, sub_file: pysrt.SubFile, all_decks: List[DeckData]) -> List[DeckData]:
+    def detect_active_decks(
+        self, sub_file: pysrt.SubFile, all_decks: List[DeckData]
+    ) -> List[DeckData]:
         """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
-        # FIX: Explicitly extract the .text property from each cue item
-        full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, 'text')]).lower()
+        full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, "text")]).lower()
         matched_decks = []
 
         for deck in all_decks:
             match_count = sum(1 for card_key in deck.lookup_keys if card_key in full_text)
-            # Threshold constraint: Deck requires at least 2 distinct spoken matches
             if match_count >= 2:
                 matched_decks.append(deck)
         return matched_decks
@@ -283,7 +291,7 @@ class OptimizedSlidingWindowAnalyzer:
         while current_size < self.max_expanded_size and (start_idx + current_size) < total_cues:
             current_size += 1
             segment = sub_file[start_idx : start_idx + current_size]
-            exp_text = " ".join([cue.text for cue in segment]).lower()
+            exp_text = " ".join([cue.text for cue in segment if hasattr(cue, "text")]).lower()
 
             found_new = False
             for deck in decks:
@@ -318,19 +326,19 @@ class OptimizedSlidingWindowAnalyzer:
         seen: Set[Tuple[str, str]],
         hits: List[Tuple[str, CardData, bool]],
     ) -> Tuple[str, int]:
-        """Helper to compute lookahead text elements outside core footprint."""
         exp_hits, final_size = self._expand_window_horizontally(sub_file, idx, decks, seen)
         hits.extend(exp_hits)
         return self._build_chapter_title(hits), final_size
 
     def _append_or_merge_chapter(self, chapters: List[dict], start_sec: int, title: str) -> None:
-        """Appends or merges a chapter to clear local variable limits."""
         if chapters and (start_sec - self._time_to_seconds(chapters[-1]["timestamp"]) < 10):
             chapters[-1]["title"] += f" + {title}"
         else:
             chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
 
-    def analyze_chapters(self, sub_file: pysrt.SubFile, decks: List[DeckData], keywords: List[str]) -> List[dict]:
+    def analyze_chapters(
+        self, sub_file: pysrt.SubFile, decks: List[DeckData], keywords: List[str]
+    ) -> List[dict]:
         """Analyzes subtitle timelines to generate chapter milestone tracks."""
         chapters = []
         seen_cards: Set[Tuple[str, str]] = set()
@@ -349,7 +357,7 @@ class OptimizedSlidingWindowAnalyzer:
                 i += self.step_size
                 continue
 
-            window_text = " ".join([cue.text for cue in window]).lower()
+            window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
             start_sec = self._get_cue_seconds(window.start)
 
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_cards)
@@ -372,11 +380,20 @@ class OptimizedSlidingWindowAnalyzer:
     def _time_to_seconds(time_str: str) -> int:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
+
+# ==============================================================================
+# CLI Group Definition (Must be defined first to resolve decorator references)
+# ==============================================================================
+
 @click.group()
 def main():
     """Tarot Video Tools: Orchestrator managing dynamic chapter extraction metrics."""
     pass
 
+
+# ==============================================================================
+# CLI Subcommands
+# ==============================================================================
 
 @main.command()
 @click.option("--name", required=True, type=str, help="Target identity designation code key.")
@@ -472,7 +489,6 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
     sub_file = pysrt.open(srt_file, encoding="utf-8")
     analyzer = OptimizedSlidingWindowAnalyzer()
 
-    # Dynamic Zero-Configuration Auto-Detection Flow Block
     if not deck_list:
         click.echo("No explicit decks provided. Scanning dialogue for keyword signatures...")
         all_cached_decks = repo.load_all_cached_decks()
@@ -480,7 +496,6 @@ def parse(srt_file: str, deck_list: Tuple[str, ...], cache_dir: str, output: Opt
         if not active_decks:
             click.echo("Error: Unable to auto-detect any active deck cache templates.", err=True)
             sys.exit(1)
-        # Log discovered signature identities to terminal
         discovered_names = [d.deck_name for d in active_decks]
         click.echo(f"Auto-detected active registries: {', '.join(discovered_names)}")
     else:
