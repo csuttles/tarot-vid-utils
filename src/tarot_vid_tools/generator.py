@@ -139,7 +139,7 @@ class OpenLibraryDeckFetcher:
         if len(docs) == 0:
             return [], inferred_count
 
-        target_doc = docs[0]
+        target_doc = docs
         work_key = target_doc.get("key")
         if not work_key:
             return [], inferred_count
@@ -254,7 +254,7 @@ class OptimizedSlidingWindowAnalyzer:
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
     def detect_active_decks(
-        self, sub_file: pysrt.SubFile, all_decks: List[DeckData]
+        self, sub_file: pysrt.SubRipFile, all_decks: List[DeckData]
     ) -> List[DeckData]:
         """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
         full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, "text")]).lower()
@@ -282,7 +282,7 @@ class OptimizedSlidingWindowAnalyzer:
         return matches
 
     def _expand_window_horizontally(
-        self, sub_file: pysrt.SubFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
+        self, sub_file: pysrt.SubRipFile, start_idx: int, decks: List[DeckData], seen: Set[Tuple[str, str]]
     ) -> Tuple[List[Tuple[str, CardData, bool]], int]:
         expanded_matches = []
         current_size = self.base_window_size
@@ -320,7 +320,7 @@ class OptimizedSlidingWindowAnalyzer:
 
     def _process_match(
         self,
-        sub_file: pysrt.SubFile,
+        sub_file: pysrt.SubRipFile,
         idx: int,
         decks: List[DeckData],
         seen: Set[Tuple[str, str]],
@@ -337,7 +337,7 @@ class OptimizedSlidingWindowAnalyzer:
             chapters.append({"timestamp": self._seconds_to_time(start_sec), "title": title})
 
     def analyze_chapters(
-        self, sub_file: pysrt.SubFile, decks: List[DeckData], keywords: List[str]
+        self, sub_file: pysrt.SubRipFile, decks: List[DeckData], keywords: List[str]
     ) -> List[dict]:
         """Analyzes subtitle timelines to generate chapter milestone tracks."""
         chapters = []
