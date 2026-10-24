@@ -242,8 +242,9 @@ class SemanticAttributeEnricher:
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
 
+
 class OptimizedSlidingWindowAnalyzer:
-    """Core analytical component tracking card timelines and meta-topics frameworks."""
+    """Core analytical component tracking card timelines and prioritized tarot sets."""
 
     def __init__(
         self, base_window_size: int = 4, max_expanded_size: int = 12, step_size: int = 1
@@ -253,7 +254,6 @@ class OptimizedSlidingWindowAnalyzer:
         self.step_size = step_size
         self.rev_keywords = {"reversed", "upside down", "inverted", "flipped"}
 
-        # Cross-framework diagnostic metadata topics lookup catalog map matrix
         self.frameworks = [
             ("channeled message", ["channeled", "channeling", "download", "received transmission"]),
             ("psychic mediumship", ["mediumship", "psychic", "spirit world", "clairvoyant", "clairsentient"]),
@@ -269,15 +269,35 @@ class OptimizedSlidingWindowAnalyzer:
     def detect_active_decks(
         self, sub_file: SubRipFile, all_decks: List[DeckData]
     ) -> List[DeckData]:
-        """Scans raw dialogue to isolate decks that hit meaningful keyword matches."""
+        """Isolates active frameworks, enforcing strict hierarchical priority filters."""
         full_text = " ".join([cue.text for cue in sub_file if hasattr(cue, "text")]).lower()
-        matched_decks = []
+        matched_tarot = []
+        matched_oracle = []
 
         for deck in all_decks:
             match_count = sum(1 for card_key in deck.lookup_keys if card_key in full_text)
             if match_count >= 2:
-                matched_decks.append(deck)
-        return matched_decks
+                if deck.deck_type == "tarot":
+                    matched_tarot.append(deck)
+                else:
+                    matched_oracle.append(deck)
+
+        # Enforce strict fallback order: Rider Waite, Golden Dawn, Hermetic Tarot
+        priority_order = ["rider waite", "golden dawn", "hermetic"]
+        sorted_tarot = []
+
+        for priority in priority_order:
+            for deck in matched_tarot:
+                if priority in deck.deck_name.lower() and deck not in sorted_tarot:
+                    sorted_tarot.append(deck)
+
+        # Append remaining non-priority tarot files if still below limit bounds
+        for deck in matched_tarot:
+            if deck not in sorted_tarot:
+                sorted_tarot.append(deck)
+
+        # Throttle total loaded tarot models back to the top 3 examples to prevent duplicates
+        return sorted_tarot[:3] + matched_oracle
 
     def _scan_frameworks(self, text: str) -> List[str]:
         """Identifies active non-card spiritual modalities and entities spoken in window."""
@@ -297,7 +317,6 @@ class OptimizedSlidingWindowAnalyzer:
         for deck in decks:
             for card_key in deck.lookup_keys:
                 if card_key in text:
-                    # Throttle Constraint: Enforce a hard cap of 3 repeat references per unique card
                     if seen_counts.get((deck.deck_name, card_key), 0) >= 3:
                         continue
                     is_rev = any(rw in text for rw in self.rev_keywords)
@@ -379,7 +398,7 @@ class OptimizedSlidingWindowAnalyzer:
         kw_set = set(keywords)
 
         if sub_file and len(sub_file) > 0:
-            intro_sec = self._get_cue_seconds(sub_file[0].start)
+            intro_sec = self._get_cue_seconds(sub_file.start)
             chapters.append(
                 {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
             )
@@ -392,7 +411,7 @@ class OptimizedSlidingWindowAnalyzer:
                 continue
 
             window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
-            start_sec = self._get_cue_seconds(window[0].start)
+            start_sec = self._get_cue_seconds(window.start)
 
             meta_topics = self._scan_frameworks(window_text)
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_card_counts)
