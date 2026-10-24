@@ -243,7 +243,6 @@ class SemanticAttributeEnricher:
             "cosmic": "Nebula Grounding Matrix", "energy": "Radiant Vibration", "polarity": "Balanced"
         }
 
-
 class OptimizedSlidingWindowAnalyzer:
     """Core analytical component evaluating timelines with reversal matching."""
 
@@ -346,8 +345,9 @@ class OptimizedSlidingWindowAnalyzer:
         seen_cards: Set[Tuple[str, str]] = set()
         kw_set = set(keywords)
 
+        # FIX: Access the first element's start attribute to prevent list-level AttributeErrors
         if sub_file and len(sub_file) > 0:
-            intro_sec = self._get_cue_seconds(sub_file.start)
+            intro_sec = self._get_cue_seconds(sub_file[0].start)
             chapters.append(
                 {"timestamp": self._seconds_to_time(intro_sec), "title": "Introduction & Grounding"}
             )
@@ -360,7 +360,7 @@ class OptimizedSlidingWindowAnalyzer:
                 continue
 
             window_text = " ".join([cue.text for cue in window if hasattr(cue, "text")]).lower()
-            start_sec = self._get_cue_seconds(window.start)
+            start_sec = self._get_cue_seconds(window[0].start)
 
             hits = self._scan_decks_for_match(window_text, decks, kw_set, seen_cards)
             if hits:
@@ -382,6 +382,7 @@ class OptimizedSlidingWindowAnalyzer:
     def _time_to_seconds(time_str: str) -> int:
         h, m, s = map(int, time_str.split(":"))
         return h * 3600 + m * 60 + s
+
 
 # ==============================================================================
 # CLI Group Definition (Must be defined first to resolve decorator references)
