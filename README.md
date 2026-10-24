@@ -28,6 +28,7 @@ Standard (FHS):
 └── tests/
 ├── init.py           # Automation testing scope marker
 └── test_generator.py     # pytest validation scenarios & sequence simulation tests
+|__ bootstrap_all.sh.     # convenience script to bootstrap a local cache of 144 popular decks    
 ```
 ---
 
@@ -44,6 +45,12 @@ poetry install
 ```
 
 ## 🛠 Command-Line Interface (CLI) Specification
+
+If you want to jump right in, the convenience script `bootstrap_all.sh` will fetch 144 popular decks to your local cache:
+
+```
+bash -x bootstrap_all.sh
+```
 
 The utility provides a unified binary command, `tarot-chapters`, exposed via two subcommands:
 
