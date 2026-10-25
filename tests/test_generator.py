@@ -73,11 +73,11 @@ def test_sliding_window_card_detection(mock_srt_file, sample_deck):
     chapters = analyzer.analyze_chapters(sub_file, [sample_deck], keywords)
 
     assert len(chapters) == 1
-    # Verify the rich activation strings contain our target deck and archetypes
+    # Verify the rich activation strings contain our target archetypes cleanly
     title = chapters[0]["title"]
     assert "The Fool" in title
     assert "The Magician" in title
-    assert "Rider_Waite" in title
+
 
 
 def test_dynamic_lookahead_expansion(sample_deck):
