@@ -328,31 +328,31 @@ class OptimizedSlidingWindowAnalyzer:
     def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]], meta_topics: List[str]) -> str:
         narrative_parts = []
         if meta_topics:
-            # Clean duplicate structural framework topics
             narrative_parts.append(" ".join(sorted(list(set(meta_topics)))))
 
-        card_narratives = []
-        seen_narratives = set()  # <-- Track unique lines to kill the repetition loop
-
+        # Group deck hits by card identity to prevent paragraph stacking
+        card_to_decks: Dict[str, Tuple[CardData, bool, List[str]]] = {}
         for d_name, card, is_rev in hits:
-            rev_str = " in reverse orientation" if is_rev else " in upright alignment"
+            if card.name not in card_to_decks:
+                card_to_decks[card.name] = (card, is_rev, [])
+            card_to_decks[card.name][2].append(d_name)
+
+        card_narratives = []
+        for card_name, (card, is_rev, deck_names) in card_to_decks.items():
+            rev_str = " (Reversed)" if is_rev else " (Upright)"
             elem = card.attributes.get("element", "Aura Field")
             astro = card.attributes.get("astrology", "Universal")
 
-            card_desc = (
-                f"Activation of {card.name} ({d_name}){rev_str}, grounding structured archetypal "
-                f"currents directly through the element of {elem} and corresponding {astro} attributes."
-            )
-
-            # Only append if we haven't seen this exact card/deck configuration in this window
-            if card_desc not in seen_narratives:
-                card_narratives.append(card_desc)
-                seen_narratives.add(card_desc)
+            # Combine all triggering decks cleanly on a single line
+            decks_str = ", ".join(deck_names)
+            card_desc = f"Activation: {card_name}{rev_str} [{decks_str}] Grounding {elem} & {astro} Currents."
+            card_narratives.append(card_desc)
 
         if card_narratives:
-            narrative_parts.append(" ".join(card_narratives))
+            narrative_parts.append(" | ".join(card_narratives))
 
         return " | ".join(narrative_parts)
+
 
 
     def _get_cue_seconds(self, sub_time) -> int:

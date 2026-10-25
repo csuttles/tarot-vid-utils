@@ -12,7 +12,8 @@ fi
 VIDEO_PATH="$1"
 BASE_PATH="${VIDEO_PATH%.*}"
 SRT_PATH="${BASE_PATH}.srt"
-CHAPTERS_PATH="${BASE_PATH}_chapters.txt"
+RAW_CHAPTERS_PATH="${BASE_PATH}_chapters_raw.txt"
+POLISHED_CHAPTERS_PATH="${BASE_PATH}_chapters.txt"
 YOUTUBE_META_PATH="${BASE_PATH}_youtube_meta.md"
 
 echo "=========================================================================="
@@ -30,14 +31,25 @@ poetry run python src/tarot_vid_tools/extract_subs.py \
 # Step 2: Custom Tarot Chapter / Card Milestone Marker Parse
 echo -e "\n🃏 [Step 2/3] Analyzing Text Timelines for Card Signatures..."
 if [ -f "$SRT_PATH" ]; then
-    # Parse text sequences using auto-detection across local cached registries
-    poetry run tarot-chapters parse "$SRT_PATH" --output "$CHAPTERS_PATH"
+    poetry run tarot-chapters parse "$SRT_PATH" --output "$RAW_CHAPTERS_PATH"
 else
     echo "Error: Target SRT file was not created successfully."
     exit 1
 fi
 
-# Step 3: Local YouTube Asset Packaging via Ollama
+# Step 3: Polish Chapters Locally using Ollama to kill repetitive phrasing
+echo -e "\n✨ Refining and condensing chapters via Ollama..."
+POLISH_PROMPT="You are a professional editor. Clean up the following YouTube video chapters. Group multiple deck listings for the same card into a single, punchy phrase. Strip out repetitive phrasing like 'grounding structured archetypal currents directly through the element of'. Make each line unique, deeply evocative, and specific to the cards mentioned. Keep the exact 'hh:mm:ss - Title' format intact. Zero emojis. Raw text lines only:\n\n$(cat "$RAW_CHAPTERS_PATH")"
+
+curl -s -X POST http://localhost:11434/api/chat -d "{
+  \"model\": \"llama3.2:latest\",
+  \"messages\": [
+    {\"role\": \"user\", \"content\": \"$(echo "$POLISH_PROMPT" | sed 's/"/\\"/g' | tr '\n' ' ')\"}
+  ],
+  \"stream\": false
+}" | python3 -c "import sys, json; print(json.load(sys.stdin)['message']['content'])" > "$POLISHED_CHAPTERS_PATH"
+
+# Step 4: Local YouTube Asset Packaging via Ollama
 echo -e "\n📊 [Step 3/3] Compiling Local Metadata Package via Ollama..."
 if [ -f "$SRT_PATH" ]; then
     poetry run python src/tarot_vid_tools/generate_yt_metadata_local.py \
@@ -48,18 +60,18 @@ else
     exit 1
 fi
 
-# Step 4: Combine Analytics Outputs for absolute convenience
-if [ -f "$CHAPTERS_PATH" ]; then
-    echo -e "\nAppending dense structural chapters to final markdown workspace profile..."
+# Step 5: Combine Analytics Outputs into final Markdown file
+if [ -f "$POLISHED_CHAPTERS_PATH" ]; then
+    echo -e "\nAppending dense polished chapters to final markdown workspace profile..."
     echo -e "\n\n## 🏷️ Extracted Structural Video Chapters\n\`\`\`text" >> "$YOUTUBE_META_PATH"
-    cat "$CHAPTERS_PATH" >> "$YOUTUBE_META_PATH"
+    cat "$POLISHED_CHAPTERS_PATH" >> "$YOUTUBE_META_PATH"
     echo -e "\`\`\`" >> "$YOUTUBE_META_PATH"
 fi
 
-echo -e "\n=========================================================================="
+# Clean up raw artifacts
+rm -f "$RAW_CHAPTERS_PATH"
+
+echo "=========================================================================="
 echo "🎉 Pipeline Completed Successfully!"
-echo "Generated SRT      : $SRT_PATH"
-echo "Generated Chapters : $CHAPTERS_PATH"
-echo "Generated YouTube  : $YOUTUBE_META_PATH"
 echo "=========================================================================="
 
