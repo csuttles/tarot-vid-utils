@@ -28,7 +28,7 @@ Standard (FHS):
 └── tests/
 ├── init.py           # Automation testing scope marker
 └── test_generator.py     # pytest validation scenarios & sequence simulation tests
-|__ bootstrap_all.sh.     # convenience script to bootstrap a local cache of 144 popular decks    
+|__ bootstrap_all.sh.     # convenience script to bootstrap a local cache of 144 popular decks
 ```
 ---
 
@@ -136,5 +136,78 @@ poetry run pytest
 poetry run flake8 src/ tests/
 poetry run black --check src/ tests/
 poetry run pylint src/ tests/
+```
+---
+
+## 🎙️ Subtitle Extraction (Audio Transcription)
+
+The project includes an advanced audio transcription utility (`extract_subs.py`) that leverages optimized **CTranslate2 Whisper** models to convert spoken video dialogue directly into clean, timestamped SubRip (`.srt`) files.
+
+By default, it uses the highly efficient **`eepdml/faster-whisper-large-v3-turbo-ct2`** model, which offers near-perfect accuracy with blazing-fast transcription speeds.
+
+### 📦 Prerequisites & Installation
+
+Ensure you have initialized your environment with the core audio processing dependencies:
+
+```bash
+poetry add faster-whisper
+```
+
+*Note: For GPU acceleration on Linux machines, ensure your system has appropriate `cuda` and `cuDNN` libraries installed.*
+
+---
+
+### 🚀 Usage & Examples
+
+The script automatically detects whether to run on CPU or GPU frameworks based on your arguments. By default, it saves the generated `.srt` file **directly alongside the input video file** using the same base name.
+
+#### 1. Optimization for Apple Silicon (M5 Pro / macOS)
+Maximize your Mac's efficiency by using high-performance CPU multi-threading combined with `int8` quantization. Adjust threads based on your specific M5 Pro core configuration (e.g., 6–8 threads balances speed and thermal footprint):
+
+```bash
+poetry run python src/tarot_vid_tools/extract_subs.py \
+  ~/Movies/input_video.mov \
+  --device cpu \
+  --compute-type int8 \
+  --threads 8
+```
+
+#### 2. High-Core Count Linux Box (CPU-Only)
+Scale processing across deep multi-core server environments by boosting thread workers:
+
+```bash
+poetry run python src/tarot_vid_tools/extract_subs.py \
+  /path/to/video.mp4 \
+  --device cpu \
+  --compute-type int8 \
+  --threads 16
+```
+
+#### 3. NVIDIA CUDA Accelerated Linux Box (GPU)
+For machines equipped with modern NVIDIA cards, unlock maximum throughput utilizing native `float16` precision:
+
+```bash
+poetry run python src/tarot_vid_tools/extract_subs.py \
+  /path/to/video.mp4 \
+  --device cuda \
+  --compute-type float16
+```
+
+---
+
+### ⚙️ Command-Line Arguments Reference
+
+| Argument | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `video_path` | `str` | *Required* | Path to the target input video file. |
+| `-o`, `--output` | `str` | `None` | Custom path to save the `.srt` file. (Defaults next to video file). |
+| `-m`, `--model` | `str` | `eepdml/...` | HuggingFace CTranslate2 Whisper model identifier key. |
+| `-d`, `--device` | `str` | `cpu` | Computational engine device type. Choices: `cpu`, `cuda`. |
+| `-c`, `--compute-type`| `str` | `int8` | Quantization precision framework (`int8`, `float16`, `int8_float16`). |
+| `-t`, `--threads` | `int` | `4` | Worker threads assigned to CPU operational matrix blocks. |
+
+To view the complete self-documenting CLI helper directly inside your terminal, execute:
+```bash
+poetry run python src/tarot_vid_tools/extract_subs.py --help
 ```
 
