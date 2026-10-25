@@ -328,22 +328,32 @@ class OptimizedSlidingWindowAnalyzer:
     def _build_chapter_title(self, hits: List[Tuple[str, CardData, bool]], meta_topics: List[str]) -> str:
         narrative_parts = []
         if meta_topics:
-            narrative_parts.append(" ".join(meta_topics))
+            # Clean duplicate structural framework topics
+            narrative_parts.append(" ".join(sorted(list(set(meta_topics)))))
 
         card_narratives = []
+        seen_narratives = set()  # <-- Track unique lines to kill the repetition loop
+
         for d_name, card, is_rev in hits:
             rev_str = " in reverse orientation" if is_rev else " in upright alignment"
             elem = card.attributes.get("element", "Aura Field")
             astro = card.attributes.get("astrology", "Universal")
+
             card_desc = (
                 f"Activation of {card.name} ({d_name}){rev_str}, grounding structured archetypal "
                 f"currents directly through the element of {elem} and corresponding {astro} attributes."
             )
-            card_narratives.append(card_desc)
+
+            # Only append if we haven't seen this exact card/deck configuration in this window
+            if card_desc not in seen_narratives:
+                card_narratives.append(card_desc)
+                seen_narratives.add(card_desc)
 
         if card_narratives:
             narrative_parts.append(" ".join(card_narratives))
+
         return " | ".join(narrative_parts)
+
 
     def _get_cue_seconds(self, sub_time) -> int:
         return sub_time.hours * 3600 + sub_time.minutes * 60 + sub_time.seconds
