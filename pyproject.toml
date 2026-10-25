@@ -15,7 +15,9 @@ dependencies = [
     "pyobjc-framework-cocoa (>=12.2.2,<13.0.0)",
     "pyobjc-framework-vision (>=12.2.2,<13.0.0)",
     "opencv-python (>=5.0.0.93,<6.0.0.0)",
-    "faster-whisper (>=1.2.1,<2.0.0)"
+    "faster-whisper (>=1.2.1,<2.0.0)",
+    "google-genai (>=2.33.0,<3.0.0)",
+    "requests (>=2.34.2,<3.0.0)"
 ]
 
 [tool.poetry]
