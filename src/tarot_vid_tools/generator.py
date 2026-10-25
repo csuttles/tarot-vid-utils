@@ -232,8 +232,15 @@ class OptimizedSlidingWindowAnalyzer:
         matched_oracle = []
 
         for deck in all_decks:
-            match_count = sum(1 for card_key in deck.lookup_keys if card_key in full_text)
-            if match_count >= 2:
+            match_count = 0
+            for card_key in deck.lookup_keys:
+                # FIXED: Strip 'the ' prefix for loose lookup checks if dialogue is casual
+                clean_key = card_key.replace("the ", "").strip()
+                if clean_key in full_text and len(clean_key) > 3:
+                    match_count += 1
+
+            # Drop activation requirement down to 1 distinct token hit to catch casual videos
+            if match_count >= 1:
                 if deck.deck_type == "tarot":
                     matched_tarot.append(deck)
                 else:
@@ -252,6 +259,7 @@ class OptimizedSlidingWindowAnalyzer:
                 sorted_tarot.append(deck)
 
         return sorted_tarot[:3] + matched_oracle
+
 
     def _scan_frameworks(self, text: str) -> List[str]:
         """Compiles dense contextual descriptions for active spiritual modalities spoken in window."""
