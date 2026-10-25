@@ -7,329 +7,175 @@
             "number": "1",
             "attributes": {
                 "astrology": "Uranus / Zero State Node",
-                "binary_yes_no": "Yes",
-                "gender": "Unmanifest Potency",
-                "element": "Air / Æther",
-                "jungian": "The Puer Aeternus Core",
-                "archetype": "The Innocent / Wanderer",
-                "cosmic": "Pre-Big-Bang Singularity",
-                "energy": "Pure Potential",
-                "polarity": "Neutral"
+                "element": "Air / Æther"
             }
         },
         "the magician": {
             "name": "The Magician",
             "number": "2",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the high priestess": {
             "name": "The High Priestess",
             "number": "3",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the empress": {
             "name": "The Empress",
             "number": "4",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the emperor": {
             "name": "The Emperor",
             "number": "5",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the hierophant": {
             "name": "The Hierophant",
             "number": "6",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the lovers": {
             "name": "The Lovers",
             "number": "7",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the chariot": {
             "name": "The Chariot",
             "number": "8",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "strength": {
             "name": "Strength",
             "number": "9",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the hermit": {
             "name": "The Hermit",
             "number": "10",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "wheel of fortune": {
             "name": "Wheel of Fortune",
             "number": "11",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "justice": {
             "name": "Justice",
             "number": "12",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the hanged man": {
             "name": "The Hanged Man",
             "number": "13",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "death": {
             "name": "Death",
             "number": "14",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "temperance": {
             "name": "Temperance",
             "number": "15",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the devil": {
             "name": "The Devil",
             "number": "16",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the tower": {
             "name": "The Tower",
             "number": "17",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the star": {
             "name": "The Star",
             "number": "18",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the moon": {
             "name": "The Moon",
             "number": "19",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the sun": {
             "name": "The Sun",
             "number": "20",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "judgement": {
             "name": "Judgement",
             "number": "21",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "the world": {
             "name": "The World",
             "number": "22",
             "attributes": {
-                "astrology": "Universal Blueprint System",
-                "binary_yes_no": "Neutral",
-                "gender": "Unified Field Essence",
-                "element": "Aura Field Synthesis",
-                "jungian": "Collective Unconscious Space",
-                "archetype": "The Shadow Prototype",
-                "cosmic": "Nebula Grounding Matrix",
-                "energy": "Radiant Vibration",
-                "polarity": "Balanced"
+                "astrology": "Mars / Aries Decan Axis",
+                "element": "Earth & Fire Synthesis"
             }
         },
         "ace of wands": {
@@ -337,14 +183,7 @@
             "number": "23",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "2 of wands": {
@@ -352,14 +191,7 @@
             "number": "24",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "3 of wands": {
@@ -367,14 +199,7 @@
             "number": "25",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "4 of wands": {
@@ -382,14 +207,7 @@
             "number": "26",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "5 of wands": {
@@ -397,14 +215,7 @@
             "number": "27",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "6 of wands": {
@@ -412,14 +223,7 @@
             "number": "28",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "7 of wands": {
@@ -427,14 +231,7 @@
             "number": "29",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "8 of wands": {
@@ -442,14 +239,7 @@
             "number": "30",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "9 of wands": {
@@ -457,14 +247,7 @@
             "number": "31",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "10 of wands": {
@@ -472,14 +255,7 @@
             "number": "32",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "page of wands": {
@@ -487,14 +263,7 @@
             "number": "33",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "knight of wands": {
@@ -502,14 +271,7 @@
             "number": "34",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "queen of wands": {
@@ -517,14 +279,7 @@
             "number": "35",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "king of wands": {
@@ -532,14 +287,7 @@
             "number": "36",
             "attributes": {
                 "astrology": "Sun / Fire Mars Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Masculine / Expressive",
-                "element": "Fire",
-                "jungian": "Libido / Psychic Drive",
-                "archetype": "The Hero / Creator",
-                "cosmic": "Solar Flare Core",
-                "energy": "Dynamic / Kinetic",
-                "polarity": "Positive"
+                "element": "Fire"
             }
         },
         "ace of cups": {
@@ -547,14 +295,7 @@
             "number": "37",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "2 of cups": {
@@ -562,14 +303,7 @@
             "number": "38",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "3 of cups": {
@@ -577,14 +311,7 @@
             "number": "39",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "4 of cups": {
@@ -592,14 +319,7 @@
             "number": "40",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "5 of cups": {
@@ -607,14 +327,7 @@
             "number": "41",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "6 of cups": {
@@ -622,14 +335,7 @@
             "number": "42",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "7 of cups": {
@@ -637,14 +343,7 @@
             "number": "43",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "8 of cups": {
@@ -652,14 +351,7 @@
             "number": "44",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "9 of cups": {
@@ -667,14 +359,7 @@
             "number": "45",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "10 of cups": {
@@ -682,14 +367,7 @@
             "number": "46",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "page of cups": {
@@ -697,14 +375,7 @@
             "number": "47",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "knight of cups": {
@@ -712,14 +383,7 @@
             "number": "48",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "queen of cups": {
@@ -727,14 +391,7 @@
             "number": "49",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "king of cups": {
@@ -742,14 +399,7 @@
             "number": "50",
             "attributes": {
                 "astrology": "Moon / Venus Water Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Receptive",
-                "element": "Water",
-                "jungian": "Anima / Feeling Function",
-                "archetype": "The Lover / Mystic",
-                "cosmic": "Lunar Lunar Core",
-                "energy": "Fluidic / Astral",
-                "polarity": "Negative"
+                "element": "Water"
             }
         },
         "ace of swords": {
@@ -757,14 +407,7 @@
             "number": "51",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "2 of swords": {
@@ -772,14 +415,7 @@
             "number": "52",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "3 of swords": {
@@ -787,14 +423,7 @@
             "number": "53",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "4 of swords": {
@@ -802,14 +431,7 @@
             "number": "54",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "5 of swords": {
@@ -817,14 +439,7 @@
             "number": "55",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "6 of swords": {
@@ -832,14 +447,7 @@
             "number": "56",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "7 of swords": {
@@ -847,14 +455,7 @@
             "number": "57",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "8 of swords": {
@@ -862,14 +463,7 @@
             "number": "58",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "9 of swords": {
@@ -877,14 +471,7 @@
             "number": "59",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "10 of swords": {
@@ -892,14 +479,7 @@
             "number": "60",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "page of swords": {
@@ -907,14 +487,7 @@
             "number": "61",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "knight of swords": {
@@ -922,14 +495,7 @@
             "number": "62",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "queen of swords": {
@@ -937,14 +503,7 @@
             "number": "63",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "king of swords": {
@@ -952,14 +511,7 @@
             "number": "64",
             "attributes": {
                 "astrology": "Mercury / Saturn Air Decan",
-                "binary_yes_no": "No",
-                "gender": "Masculine / Direct",
-                "element": "Air",
-                "jungian": "Persona / Thinking Function",
-                "archetype": "The Ruler / Sage",
-                "cosmic": "Nebula Cloud Split",
-                "energy": "Focused / Electric",
-                "polarity": "Positive"
+                "element": "Air"
             }
         },
         "ace of pentacles": {
@@ -967,14 +519,7 @@
             "number": "65",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "2 of pentacles": {
@@ -982,14 +527,7 @@
             "number": "66",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "3 of pentacles": {
@@ -997,14 +535,7 @@
             "number": "67",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "4 of pentacles": {
@@ -1012,14 +543,7 @@
             "number": "68",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "5 of pentacles": {
@@ -1027,14 +551,7 @@
             "number": "69",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "6 of pentacles": {
@@ -1042,14 +559,7 @@
             "number": "70",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "7 of pentacles": {
@@ -1057,14 +567,7 @@
             "number": "71",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "8 of pentacles": {
@@ -1072,14 +575,7 @@
             "number": "72",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "9 of pentacles": {
@@ -1087,14 +583,7 @@
             "number": "73",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "10 of pentacles": {
@@ -1102,14 +591,7 @@
             "number": "74",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "page of pentacles": {
@@ -1117,14 +599,7 @@
             "number": "75",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "knight of pentacles": {
@@ -1132,14 +607,7 @@
             "number": "76",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "queen of pentacles": {
@@ -1147,14 +615,7 @@
             "number": "77",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         },
         "king of pentacles": {
@@ -1162,14 +623,7 @@
             "number": "78",
             "attributes": {
                 "astrology": "Jupiter / Taurus Earth Decan",
-                "binary_yes_no": "Yes",
-                "gender": "Feminine / Grounded",
-                "element": "Earth",
-                "jungian": "Shadow / Sensation Function",
-                "archetype": "The Provider",
-                "cosmic": "Planetary Crust Gravity",
-                "energy": "Magnetic / Dense",
-                "polarity": "Negative"
+                "element": "Earth"
             }
         }
     }
