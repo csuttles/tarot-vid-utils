@@ -8,6 +8,22 @@ import argparse
 import os
 import sys
 from typing import Optional
+
+# ==============================================================================
+# SURGICAL MONKEY-PATCH FOR PYAV (av) INTERNALS
+# Fixes: TypeError: open() got an unexpected keyword argument 'metadata_errors'
+# ==============================================================================
+import av
+original_av_open = av.open
+
+def patched_av_open(*args, **kwargs):
+    """Intercepts and removes the deprecated 'metadata_errors' argument from PyAV."""
+    kwargs.pop("metadata_errors", None)
+    return original_av_open(*args, **kwargs)
+
+av.open = patched_av_open
+# ==============================================================================
+
 from faster_whisper import WhisperModel
 
 
@@ -54,7 +70,6 @@ def process_audio_dialogue(
 
     print(f"Loading Model : {model_name} on [{device.upper()}]...")
 
-    # Initialize the Whisper engine with custom hardware configurations
     model = WhisperModel(
         model_size_or_path=model_name,
         device=device,
@@ -66,7 +81,7 @@ def process_audio_dialogue(
     print(f"Output Target : {output_path}")
     print("Transcribing video dialogue tracks (this may take a moment)...")
 
-    # transcribe directly extracts audio from the container (no manual ffmpeg step needed)
+    # Native path tracking remains fully intact
     segments, info = model.transcribe(video_path, beam_size=5)
 
     print(f"Detected language: '{info.language}' (probability: {info.language_probability:.2f})")
@@ -102,7 +117,7 @@ def main() -> None:
         "-m",
         "--model",
         type=str,
-        default="eepdml/faster-whisper-large-v3-turbo-ct2",
+        default="deepdml/faster-whisper-large-v3-turbo-ct2",
         help="CTranslate2 Whisper model choice identifier.",
     )
     parser.add_argument(
