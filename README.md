@@ -211,3 +211,64 @@ To view the complete self-documenting CLI helper directly inside your terminal, 
 poetry run python src/tarot_vid_tools/extract_subs.py --help
 ```
 
+---
+
+# 🔮 Tarot Video Utilities (`tarot-vid-utils`)
+
+An entirely local, hardware-optimized pipeline engineered for processing tarot video footage. The application extracts audio tracks, compiles text transcriptions, flags archetypal tarot card milestones using a sliding-window algorithm, and packages unspammy YouTube metadata utilizing an offline LLM backend.
+
+## 🚀 Getting Started & Initialization
+
+This toolkit operates 100% locally on Apple Silicon (M5 Pro) and multi-core Linux platforms without internet dependencies or cloud billing APIs.
+
+### 1. Prerequisites
+Ensure you have running access to **Ollama** globally or running locally in your terminal background environment.
+```bash
+# Pull the optimized 3B parameters layout signature model
+ollama pull llama3.2
+```
+
+### 2. Environment Configuration
+To force local virtual environments and bypass implicit authentication token queries against public huggingface repositories, set up your project's local config file:
+```bash
+echo "HF_HUB_DISABLE_IMPLICIT_TOKEN=1" > .env
+```
+
+### 3. Bootstrap Registry Caches
+Seed your local text analytics engine directory with core card deck tracking schemas before your first parse:
+```bash
+./bootstrap_decks.sh
+```
+
+---
+
+## 🛠️ Pipeline Architecture & Execution Flow
+
+To run transcription channels, build timelines, and output metadata with a single invocation command, utilize the master bash script:
+
+```bash
+./process_video.sh ~/Movies/your_target_video.mov
+```
+
+### Under the Hood Component Matrix
+
+#### 1. Audio Subtitle Extraction (`extract_subs.py`)
+Utilizes CTranslate2-optimized **`deepdml/faster-whisper-large-v3-turbo-ct2`** to stream video audio straight into structured SubRip `.srt` files. PyAV dependencies are patched dynamically to support modern Python runtime containers.
+
+#### 2. Archetypal Milestone Tracking (`tarot-chapters`)
+Scans raw text blocks using a rolling sliding-window analyzer, cross-referencing timeline data against active registries seeded in `.deck_cache/` to detect card pulls, orientations (upright vs. reversed), and spiritual framework triggers natively.
+
+#### 3. Metadata Package Compiler (`generate_yt_metadata_local.py`)
+Dispatches text timelines to your local Ollama loopback server (`/api/chat`) running `llama3.2:latest`. Strict system-prompt guardrails are enforced to output clean, high-conversion content while removing marketing hype, call-to-action clickbait scripts, and spammy emojis.
+
+---
+
+## 🧪 Running Tests
+
+The application features a 100% green test matrix validating execution tracking arguments, date formatting rounding precision bounds, and sliding-window logic blocks.
+
+Run the test framework at any time inside your project directory workspace:
+```bash
+poetry run pytest -v
+```
+
