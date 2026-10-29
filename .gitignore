@@ -1,6 +1,6 @@
 # --- Python Runtime Artifacts ---
 __pycache__/
-*/__pychache/
+*/__pychache__/
 *.pyc
 *.pyo
 *.pyd
@@ -26,3 +26,6 @@ poetry.lock
 Thumbs.db
 
 .env
+
+# script specific
+.deck_cache/
