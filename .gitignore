@@ -4,6 +4,7 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
+*.pyz
 .pytest_cache/
 .pylint*
 .cache/
