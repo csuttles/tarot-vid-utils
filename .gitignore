@@ -1,6 +1,6 @@
 # --- Python Runtime Artifacts ---
 __pycache__/
-*/__pychache__/
+*/__pychache__/*
 *.pyc
 *.pyo
 *.pyd
@@ -28,4 +28,4 @@ Thumbs.db
 .env
 
 # script specific
-.deck_cache/
+.deck_cache/*
