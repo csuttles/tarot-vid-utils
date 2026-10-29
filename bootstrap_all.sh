@@ -222,6 +222,25 @@ run_bootstrap "murder of crows" "tarot" $FORCE_FLAG
 run_bootstrap "crow oracle" "oracle" $FORCE_FLAG
 run_bootstrap "sacred geometry activations oracle" "oracle" $FORCE_FLAG
 run_bootstrap "feral psychic" "oracle" $FORCE_FLAG
+run_bootstrap "soul echo" "oracle" $FORCE_FLAG
+run_bootstrap "soul echo II" "oracle" $FORCE_FLAG
+run_bootstrap "angel guide" "oracle" $FORCE_FLAG
+run_bootstrap "power animals oracle and guidebook" "oracle" $FORCE_FLAG
+run_bootstrap "muse tarot" "tarot" $FORCE_FLAG
+run_bootstrap "daydream tarot" "tarot" $FORCE_FLAG
+run_bootstrap "stained glass tarot" "tarot" $FORCE_FLAG
+run_bootstrap "the faeries oracle" "oracle" $FORCE_FLAG
+run_bootstrap "gaia oracle" "oracle" $FORCE_FLAG
+run_bootstrap "tattoo tarot" "tarot" $FORCE_FLAG
+run_bootstrap "oracle of the riftwalker" "oracle" $FORCE_FLAG
+run_bootstrap "mystical shaman oracle" "oracle" $FORCE_FLAG
+run_bootstrap "hush tarot" "tarot" $FORCE_FLAG
+run_bootstrap "ethereal bloom" "tarot" $FORCE_FLAG
+run_bootstrap "starseed oracle" "oracle" $FORCE_FLAG
+run_bootstrap "starcodes astro oracle" "oracle" $FORCE_FLAG
+run_bootstrap "cerulean sequence" "oracle" $FORCE_FLAG
+run_bootstrap "moonology" "oracle" $FORCE_FLAG
+run_bootstrap "sacred symbols" "oracle" $FORCE_FLAG
 
 
 echo "=================================================================="
