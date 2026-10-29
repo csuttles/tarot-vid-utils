@@ -1,5 +1,6 @@
 # --- Python Runtime Artifacts ---
 __pycache__/
+*/__pychache/
 *.pyc
 *.pyo
 *.pyd

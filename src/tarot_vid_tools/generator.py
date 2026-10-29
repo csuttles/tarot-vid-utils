@@ -394,13 +394,25 @@ def main():
 
 
 @main.command()
-@click.option("--name", required=True, type=str)
-@click.option("--type", "deck_type_arg", default="tarot", type=click.Choice(["tarot", "oracle"]))
-@click.option("--cache-dir", default=".deck_cache", type=str)
-def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
+@click.option("--name", required=True, type=str, help="Target identity designation code key.")
+@click.option("--type", "deck_type_arg", default="tarot", type=click.Choice(["tarot", "oracle"]), help="Deck structure template layout.")
+@click.option("--cache-dir", default=".deck_cache", type=str, help="Pathway for cache operations.")
+@click.option("-f", "--force-overwrite", is_flag=True, help="Explicitly re-fetch and overwrite existing cache file templates.")
+def bootstrap(name: str, deck_type_arg: str, cache_dir: str, force_overwrite: bool):
+    """Auto-generates localized registries using specialized fallback sizing arrays."""
     repo = LocalDeckRepository(cache_dir)
+    target_filepath = repo._get_path(name)
+
+    # Fast-exit skip logic if file exists and overwrite isn't requested
+    if target_filepath.exists() and not force_overwrite:
+        click.echo(f"Registry cache file already exists: '{target_filepath}'. Skipping fetch sequence.")
+        return
+
     deck = DeckData(deck_name=name, deck_type=deck_type_arg)
-    fetcher, enricher = OpenLibraryDeckFetcher(), SemanticAttributeEnricher()
+    click.echo(f"Fetching deck assets for '{name}'...")
+
+    fetcher = OpenLibraryDeckFetcher()
+    enricher = SemanticAttributeEnricher()
     card_names, _ = fetcher.fetch_card_details(name)
 
     if not card_names:
@@ -415,7 +427,9 @@ def bootstrap(name: str, deck_type_arg: str, cache_dir: str):
 
     for idx, card_title in enumerate(card_names):
         deck.cards[card_title.lower().strip()] = CardData(name=card_title, number=str(idx + 1), attributes=enricher.enrich_card(card_title))
+
     repo.save_deck(deck)
+    click.echo(f"Successfully serialized {len(deck.cards)} cards into local cache storage.")
 
 
 @main.command()
